@@ -15,7 +15,6 @@
             },
             "osx": {
                 "MIMode": "lldb",
-                "miDebuggerPath": "lldb-mi",
             },
             "windows": {
                 "MIMode": "gdb",
