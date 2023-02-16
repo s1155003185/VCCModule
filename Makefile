@@ -27,7 +27,7 @@ PROJECT := libVCCCore
 # Compiler Info
 # must have CXXFLAGS for default compile flags, .cpp.o only use CXXFLAGS
 CXX := g++
-CXXVERSION := c++23
+CXXVERSION := c++20
 DEBUG_FLAGS := -D__DEBUG__
 RELEASE_FLAGS :=
 #PRECOMPILE_FLAGS := -H

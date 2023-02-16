@@ -13,13 +13,6 @@ namespace vcc
 		return ws;
 	}
 
-	inline std::string wstr2str(const std::wstring& ws)
-	{
-		char output[2048];
-		sprintf_s(output, "%ws", ws.c_str());
-		return output;
-	}
-
 	inline std::string padLeft(const std::string str, size_t length, char c)
 	{
 		if (length <= str.length())

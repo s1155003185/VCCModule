@@ -28,8 +28,9 @@ namespace vcc
 
 		const char* what() const throw ()
 		{
-			const char* errorMsg = wstr2str(this->_ErrorMessage).c_str();
-			return errorMsg;
+			//const char* errorMsg = wstr2str(this->_ErrorMessage).c_str();
+			//return errorMsg;
+			return nullptr;
 		}
 	};
 
