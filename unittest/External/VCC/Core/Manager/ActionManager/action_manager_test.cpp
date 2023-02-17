@@ -8,7 +8,7 @@
 
 using namespace vcc;
 
-class ActionManagerTestClass : public BaseAction
+class ActionManagerTestClass final : public BaseAction
 {
     private:
         int uuid = 0;
