@@ -118,6 +118,7 @@
         "stack": "cpp",
         "string_view": "cpp",
         "unordered_map": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "__functional_base_03": "cpp"
     }
 }

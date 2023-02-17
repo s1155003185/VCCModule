@@ -2,7 +2,7 @@
 #include <exception>
 #include <string>
 
-#include "common_helper.hpp"
+#include "string_helper.hpp"
 #include "class_macro.hpp"
 #include "exception_type.hpp"
 
