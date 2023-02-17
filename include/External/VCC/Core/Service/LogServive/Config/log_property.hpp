@@ -13,6 +13,7 @@ namespace vcc
         GETSET(bool, IsConsoleLog, true);
         GETSET(PATH, FilePath, "");
     public:
-        LogProperty() {};
+        LogProperty() {}
+        ~LogProperty() {}
     };
 }

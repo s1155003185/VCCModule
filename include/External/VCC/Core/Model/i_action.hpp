@@ -5,10 +5,11 @@ using namespace std;
 
 namespace vcc
 {
-class IAction
-{
+    class IAction
+    {
     protected:
-        IAction() {};
+        IAction() {}
+        ~IAction() {}
 
         virtual void DoRedo() = 0;
         virtual void DoUndo() = 0;

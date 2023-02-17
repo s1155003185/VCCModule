@@ -16,7 +16,8 @@ namespace vcc
 		static wstring _logMessage(LogProperty &logProperty, LogType logType, wstring id, wstring userid, wstring message);
 
 	public:
-		LogService() : BaseService() {};
+		LogService() : BaseService() {}
+		~LogService() {}
 
 		static wstring LogInfo(wstring message);
 		static wstring LogInfo(wstring id, wstring message);

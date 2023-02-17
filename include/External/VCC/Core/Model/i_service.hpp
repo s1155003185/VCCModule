@@ -4,6 +4,8 @@ namespace vcc
 {
     class IService
     {
-
+        protected:
+            IService() {}
+            ~IService() {}
     };
 }

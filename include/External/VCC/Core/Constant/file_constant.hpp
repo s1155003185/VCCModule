@@ -3,8 +3,8 @@
 
 namespace vcc
 {
+    #define PATH std::filesystem::path
+
     // string
     constexpr auto NL = "\n";
-
-    #define PATH std::filesystem::path
 }

@@ -15,6 +15,7 @@ namespace vcc
 
     public:
         ActionManager() : BaseManager(ManagerType::Action) {}
+        ~ActionManager() {}
 
         int64_t Redo(std::shared_ptr<IAction> action);
         int64_t Redo();

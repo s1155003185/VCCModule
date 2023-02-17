@@ -12,11 +12,9 @@ namespace vcc
         GET(ActionType, Type, ActionType::NA)
 
     protected:
-        BaseAction() : BaseAction(ActionType::NA) {};
-        BaseAction(ActionType type) : IAction()
-        {
-            this->_Type = type;
-        }
+        BaseAction() : BaseAction(ActionType::NA) {}
+        BaseAction(ActionType type) : IAction() { this->_Type = type; }
+        ~BaseAction() {}
 
         virtual void LogRedo() override
         {

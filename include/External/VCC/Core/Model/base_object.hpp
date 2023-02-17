@@ -11,10 +11,8 @@ namespace vcc
         GET(ObjectType, Type, ObjectType::NA)
 
     protected:
-        BaseObject() {};
-        BaseObject(ObjectType type) : BaseObject()
-        {
-            this->_Type = type;
-        }
+        BaseObject() {}
+        BaseObject(ObjectType type) : BaseObject() { this->_Type = type; }
+        ~BaseObject() {}
     };
 }

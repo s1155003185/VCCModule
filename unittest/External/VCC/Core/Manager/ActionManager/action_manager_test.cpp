@@ -25,10 +25,8 @@ class ActionManagerTestClass : public BaseAction
     public:
         virtual wstring GetMessage() override { return std::to_wstring(uuid); }
  
-        ActionManagerTestClass(int uuid) : BaseAction(ActionType::NA)
-        {
-            this->uuid = uuid;
-        }
+        ActionManagerTestClass(int uuid) : BaseAction(ActionType::NA) { this->uuid = uuid; }
+        ~ActionManagerTestClass() {}
 };
 
 class ActionManagerTest : public testing::Test 
@@ -41,11 +39,10 @@ class ActionManagerTest : public testing::Test
         {
             return &this->_Manager;
         }
-
+    
         shared_ptr<IAction> CreateAction(int index)
         {
-            shared_ptr<ActionManagerTestClass> action = make_shared<ActionManagerTestClass>(index);
-            return action;
+            return make_shared<ActionManagerTestClass>(index);
         }
 
         void ResetWithFiveActions()

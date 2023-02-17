@@ -17,9 +17,7 @@ namespace vcc
 
 	public:
 		Exception() : Exception(ExceptionType::NA) {}
-
 		Exception(ExceptionType ExceptionType) : Exception(ExceptionType, L"") {}
-
 		Exception(ExceptionType ExceptionType, std::wstring errorMessage)
 		{
 			this->_ExceptionType = ExceptionType;

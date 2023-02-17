@@ -11,10 +11,8 @@ namespace vcc
         GET(ManagerType, Type, ManagerType::NA)
 
     protected:
-        BaseManager() {};
-        BaseManager(ManagerType type) : BaseManager()
-        {
-            this->_Type = type;
-        }
+        BaseManager() {}
+        BaseManager(ManagerType type) : BaseManager() { this->_Type = type; }
+        ~BaseManager() {}
     };
 }
