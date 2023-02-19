@@ -4,6 +4,7 @@
 #include <string>
 
 #include "exception.hpp"
+#include "exception_macro.hpp"
 #include "exception_type.hpp"
 #include "file_constant.hpp"
 
@@ -22,14 +23,14 @@ namespace vcc
 		if (!std::filesystem::is_directory(dir))
 		{
 			if (!isForce)
-				throw new Exception(ExceptionType::DIRECTORY_NOT_FOUND, L"DIRECTORY_NOT_FOUND: " + dir.wstring() + L".");
+				THROW_EXCEPTION(ExceptionType::DIRECTORY_NOT_FOUND, L"DIRECTORY_NOT_FOUND: " + dir.wstring() + L".");
 			else if (!std::filesystem::create_directories(dir))
-				throw new Exception(ExceptionType::DIRECTORY_CANNOT_CREATE, L"DIRECTORY_CANNOT_CREATE: " + dir.wstring()  + L".");
+				THROW_EXCEPTION(ExceptionType::DIRECTORY_CANNOT_CREATE, L"DIRECTORY_CANNOT_CREATE: " + dir.wstring()  + L".");
 		}
 		if (!std::filesystem::exists(filePath))
 		{
 			if (!isForce)
-				throw new Exception(ExceptionType::FILE_NOT_FOUND, L"FILE_NOT_FOUND: " + filePath.wstring() + L".");
+				THROW_EXCEPTION(ExceptionType::FILE_NOT_FOUND, L"FILE_NOT_FOUND: " + filePath.wstring() + L".");
 		}
 		std::wofstream fileStream(filePath, ios_base::app);
 		fileStream << line << NL;
@@ -46,9 +47,9 @@ namespace vcc
 		
 		PATH dir = filePath.parent_path();
 		if (!std::filesystem::is_directory(dir))
-			throw new Exception(ExceptionType::DIRECTORY_NOT_FOUND, L"DIRECTORY_NOT_FOUND: " + dir.wstring() + L".");
+			THROW_EXCEPTION(ExceptionType::DIRECTORY_NOT_FOUND, L"DIRECTORY_NOT_FOUND: " + dir.wstring() + L".");
 		if (!std::filesystem::exists(filePath))
-			throw new Exception(ExceptionType::FILE_NOT_FOUND, L"FILE_NOT_FOUND: " + filePath.wstring() + L".");
+			THROW_EXCEPTION(ExceptionType::FILE_NOT_FOUND, L"FILE_NOT_FOUND: " + filePath.wstring() + L".");
 		
 		std::wifstream fileStream(filePath, ios_base::in);
 		std::wstring line, result;

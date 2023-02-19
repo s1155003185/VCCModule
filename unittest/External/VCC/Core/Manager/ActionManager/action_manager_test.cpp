@@ -135,7 +135,7 @@ TEST_F(ActionManagerTest, RedoUndoTest)
     // Add
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->Redo(this->CreateAction(10)), 5);
-    EXPECT_EQ(manager->GetActions()->size(), 6);
+    EXPECT_TRUE(manager->GetActions()->size() == 6);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"0");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"1");
     EXPECT_EQ(manager->GetActions()->at(2)->GetMessage(), L"2");
@@ -149,13 +149,13 @@ TEST_F(ActionManagerTest, RedoUndoTest)
     EXPECT_EQ(manager->Undo(), 1);
     EXPECT_EQ(manager->Redo(), 2);
     EXPECT_EQ(manager->Redo(3), 5);
-    EXPECT_EQ(manager->GetActions()->size(), 6);
+    EXPECT_TRUE(manager->GetActions()->size() == 6);
 
     // Redo Chop
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->Undo(2), 2);
     EXPECT_EQ(manager->Redo(this->CreateAction(20)), 3);
-    EXPECT_EQ(manager->GetActions()->size(), 4);
+    EXPECT_TRUE(manager->GetActions()->size() == 4);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"0");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"1");
     EXPECT_EQ(manager->GetActions()->at(2)->GetMessage(), L"2");
@@ -168,13 +168,13 @@ TEST_F(ActionManagerTest, ChopTest)
     // ChopWithSize
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListWithSize(2), 1);
-    EXPECT_EQ(manager->GetActions()->size(), 2);
+    EXPECT_TRUE(manager->GetActions()->size() == 2);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"3");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"4");
 
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListWithSize(4), 3);
-    EXPECT_EQ(manager->GetActions()->size(), 4);
+    EXPECT_TRUE(manager->GetActions()->size() == 4);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"1");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"2");
     EXPECT_EQ(manager->GetActions()->at(2)->GetMessage(), L"3");
@@ -183,13 +183,13 @@ TEST_F(ActionManagerTest, ChopTest)
     // ChopActionListFromIndex
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListFromIndex(2), 1);
-    EXPECT_EQ(manager->GetActions()->size(), 2);
+    EXPECT_TRUE(manager->GetActions()->size() == 2);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"0");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"1");
     
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListFromIndex(4), 3);
-    EXPECT_EQ(manager->GetActions()->size(), 4);
+    EXPECT_TRUE(manager->GetActions()->size() == 4);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"0");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"1");
     EXPECT_EQ(manager->GetActions()->at(2)->GetMessage(), L"2");
@@ -198,26 +198,26 @@ TEST_F(ActionManagerTest, ChopTest)
     // ChopActionListFromBeginning
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListFromBeginning(2), 2);
-    EXPECT_EQ(manager->GetActions()->size(), 3);
+    EXPECT_TRUE(manager->GetActions()->size() == 3);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"2");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"3");
     EXPECT_EQ(manager->GetActions()->at(2)->GetMessage(), L"4");
 
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListFromBeginning(4), 0);
-    EXPECT_EQ(manager->GetActions()->size(), 1);
+    EXPECT_TRUE(manager->GetActions()->size() == 1);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"4");
     
     // ChopActionListFromEnding
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListFromEnding(2), 2);
-    EXPECT_EQ(manager->GetActions()->size(), 3);
+    EXPECT_TRUE(manager->GetActions()->size() == 3);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"0");
     EXPECT_EQ(manager->GetActions()->at(1)->GetMessage(), L"1");
     EXPECT_EQ(manager->GetActions()->at(2)->GetMessage(), L"2");
 
     this->ResetWithFiveActions();
     EXPECT_EQ(manager->ChopActionListFromEnding(4), 0);
-    EXPECT_EQ(manager->GetActions()->size(), 1);
+    EXPECT_TRUE(manager->GetActions()->size() == 1);
     EXPECT_EQ(manager->GetActions()->at(0)->GetMessage(), L"0");
 }

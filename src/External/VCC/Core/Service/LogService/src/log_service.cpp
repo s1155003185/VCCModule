@@ -31,7 +31,7 @@ namespace vcc
 			logMessage += L" [" + id + L"]";
 		if (!userid.empty())
 			logMessage += L" [" + userid + L"] ";
-		logMessage += message;
+		logMessage += L" " + message;
 		if (logProperty.GetIsConsoleLog())
 			std::wcout << logMessage << endl;
 
