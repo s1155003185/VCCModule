@@ -54,5 +54,5 @@ TEST(ExceptionTest, Full)
         HandleException(logProperty, &ex);
     }
     EXPECT_TRUE(throwException);
-    EXPECT_TRUE(HasSuffix(ReadFileSingleLline(filePath, 0), L"unittest/External/VCC/Core/Exception//exception_test.cpp:49: FILE_NOT_FOUND"));
+    EXPECT_TRUE(HasSuffix(ReadFileSingleLline(filePath, 0), L"unittest/External/VCC/Core//exception_test.cpp:49: FILE_NOT_FOUND"));
 }

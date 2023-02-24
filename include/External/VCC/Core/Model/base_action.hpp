@@ -9,33 +9,34 @@ namespace vcc
 {
     class BaseAction : public IAction
     {
+        THREAD_SAFE
         GET(ActionType, Type, ActionType::NA)
 
-    protected:
-        BaseAction() : BaseAction(ActionType::NA) {}
-        BaseAction(ActionType type) : IAction() { this->_Type = type; }
-        ~BaseAction() {}
+        protected:
+            BaseAction() : BaseAction(ActionType::NA) {}
+            BaseAction(ActionType type) : IAction() { this->_Type = type; }
+            ~BaseAction() {}
 
-        virtual void LogRedo() override
-        {
-            LogService::LogInfo(this->GetRedoMessage());
-        }
+            virtual void LogRedo() override
+            {
+                LogService::LogInfo(this->GetRedoMessage());
+            }
 
-        virtual void LogUndo() override
-        {
-            LogService::LogInfo(this->GetUndoMessage());
-        }
+            virtual void LogUndo() override
+            {
+                LogService::LogInfo(this->GetUndoMessage());
+            }
 
-        virtual void Redo() override
-        {
-            this->DoRedo();
-            this->LogRedo();
-        }
+            virtual void Redo() override
+            {
+                this->DoRedo();
+                this->LogRedo();
+            }
 
-        virtual void Undo() override
-        {
-            this->DoUndo();
-            this->LogUndo();
-        }
+            virtual void Undo() override
+            {
+                this->DoUndo();
+                this->LogUndo();
+            }
     };
 }

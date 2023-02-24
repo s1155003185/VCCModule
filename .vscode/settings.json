@@ -119,6 +119,7 @@
         "string_view": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
-        "__functional_base_03": "cpp"
+        "__functional_base_03": "cpp",
+        "__memory": "cpp"
     }
 }

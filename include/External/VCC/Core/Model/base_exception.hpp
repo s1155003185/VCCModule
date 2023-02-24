@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <string>
 
-#include "class_macro.hpp"
 #include "exception_type.hpp"
 #include "string_helper.hpp"
 

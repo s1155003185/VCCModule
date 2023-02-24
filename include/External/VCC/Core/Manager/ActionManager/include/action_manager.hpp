@@ -5,19 +5,21 @@
 #include <memory>
 #include <stdint.h>
 
+using namespace std;
+
 namespace vcc
 {
     class ActionManager : public BaseManager
     {
         GETSET(int64_t, MaxActionListSize, 100)
-        GETVECTOR(std::shared_ptr<IAction>, Actions)
+        VECTOR(shared_ptr<IAction>, Actions)
         GET(int64_t, CurrentActionIndex, -1)
 
     public:
         ActionManager() : BaseManager(ManagerType::Action) {}
         ~ActionManager() {}
 
-        int64_t Redo(std::shared_ptr<IAction> action);
+        int64_t Redo(shared_ptr<IAction> action);
         int64_t Redo();
         int64_t Redo(int64_t noOfStep);
         int64_t RedoToActionIndex(int64_t actionIndex);

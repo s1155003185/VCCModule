@@ -21,11 +21,11 @@ As c++ are upgrading since c++17 and avoid too many versions. VCCModule default 
 
 ### Core:
 -	Helper (Active)
--	Macro (Active)
+-	Thread Safe Class (Stable)
 -	Exception (Stable)
 -	Log Service (Stable)
 -	Action Manager (Stable)
--	Property Accessor (Active)
+-	Property Accessor (Pending)
 ### Module:
 -	TextEditor (Pending)
 -	Document (Pending)
@@ -43,6 +43,9 @@ When update, drop all External/vcc folders then download the latest one.
 -	Remove unittest/External to skip running unit test of VCCModule.
 
 ## Release Log
+
+### 2023-02-24 Class
+-	Thread Safe Class
 
 ### 2023-02-19 Exception
 -	Exception
