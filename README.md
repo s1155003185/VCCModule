@@ -20,12 +20,14 @@ As c++ are upgrading since c++17 and avoid too many versions. VCCModule default 
 -	Pending: Coming soon.
 
 ### Core:
--	Helper (Active)
+-	Helper (Stable)
 -	Thread Safe Class (Stable)
 -	Exception (Stable)
 -	Log Service (Stable)
 -	Action Manager (Stable)
 -	Property Accessor (Pending)
+### Common:
+-   Git (Actives)
 ### Module:
 -	TextEditor (Pending)
 -	Document (Pending)
