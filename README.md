@@ -47,7 +47,7 @@ When update, drop all External/vcc folders then download the latest one.
 
 ## Release Log
 
-### 2023-02-24 Command
+### 2023-02-25 Command
 -	Command
 
 ### 2023-02-24 Class
