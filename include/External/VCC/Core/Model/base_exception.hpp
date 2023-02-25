@@ -2,6 +2,7 @@
 #include "i_exception.hpp"
 
 #include <cstdlib>
+#include <cstring>
 #include <string>
 
 #include "exception_type.hpp"
