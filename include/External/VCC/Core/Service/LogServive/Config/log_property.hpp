@@ -10,8 +10,15 @@ namespace vcc
 {
     class LogProperty : public BaseProperty
     {
+        // General
         GETSET(bool, IsConsoleLog, true);
         GETSET(PATH, FilePath, "");
+        // Command
+        GETSET(bool, IsLogCommand, true);
+        GETSET(bool, IsLogCommandResult, true);
+        // SQL
+        GETSET(bool, IsLogSQL, true);
+        GETSET(bool, IsLogSQLResult, true);
     public:
         LogProperty() {}
         ~LogProperty() {}

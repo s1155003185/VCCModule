@@ -24,6 +24,7 @@ As c++ are upgrading since c++17 and avoid too many versions. VCCModule default 
 -	Thread Safe Class (Stable)
 -	Exception (Stable)
 -	Log Service (Stable)
+-   Command Service (Stable)
 -	Action Manager (Stable)
 -	Property Accessor (Pending)
 ### Common:
@@ -45,6 +46,9 @@ When update, drop all External/vcc folders then download the latest one.
 -	Remove unittest/External to skip running unit test of VCCModule.
 
 ## Release Log
+
+### 2023-02-24 Command
+-	Command
 
 ### 2023-02-24 Class
 -	Thread Safe Class

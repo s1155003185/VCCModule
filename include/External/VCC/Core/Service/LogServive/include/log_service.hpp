@@ -19,6 +19,7 @@ namespace vcc
 		LogService() : BaseService() {}
 		~LogService() {}
 
+		// General
 		static wstring LogInfo(wstring message);
 		static wstring LogInfo(wstring id, wstring message);
 		static wstring LogInfo(wstring id, wstring userid, wstring message);
@@ -39,5 +40,35 @@ namespace vcc
 		static wstring LogError(LogProperty &logProperty, wstring message);
 		static wstring LogError(LogProperty &logProperty, wstring id, wstring message);
 		static wstring LogError(LogProperty &logProperty, wstring id, wstring userid, wstring message);
+		
+		// Command
+		static wstring LogCommand(wstring message);
+		static wstring LogCommand(wstring id, wstring message);
+		static wstring LogCommand(wstring id, wstring userid, wstring message);
+		static wstring LogCommand(LogProperty &logProperty, wstring message);
+		static wstring LogCommand(LogProperty &logProperty, wstring id, wstring message);
+		static wstring LogCommand(LogProperty &logProperty, wstring id, wstring userid, wstring message);
+
+		static wstring LogCommandResult(wstring message);
+		static wstring LogCommandResult(wstring id, wstring message);
+		static wstring LogCommandResult(wstring id, wstring userid, wstring message);
+		static wstring LogCommandResult(LogProperty &logProperty, wstring message);
+		static wstring LogCommandResult(LogProperty &logProperty, wstring id, wstring message);
+		static wstring LogCommandResult(LogProperty &logProperty, wstring id, wstring userid, wstring message);
+		
+		// SQL
+		static wstring LogSQL(wstring message);
+		static wstring LogSQL(wstring id, wstring message);
+		static wstring LogSQL(wstring id, wstring userid, wstring message);
+		static wstring LogSQL(LogProperty &logProperty, wstring message);
+		static wstring LogSQL(LogProperty &logProperty, wstring id, wstring message);
+		static wstring LogSQL(LogProperty &logProperty, wstring id, wstring userid, wstring message);
+		
+		static wstring LogSQLResult(wstring message);
+		static wstring LogSQLResult(wstring id, wstring message);
+		static wstring LogSQLResult(wstring id, wstring userid, wstring message);
+		static wstring LogSQLResult(LogProperty &logProperty, wstring message);
+		static wstring LogSQLResult(LogProperty &logProperty, wstring id, wstring message);
+		static wstring LogSQLResult(LogProperty &logProperty, wstring id, wstring userid, wstring message);
 	};
 }
