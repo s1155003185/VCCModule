@@ -24,13 +24,18 @@ namespace vcc
             THROW_EXCEPTION(ExceptionType::CUSSTOM_ERROR, L"Cannot Execute Command: " + str2wstr(cmd));
     
         wstring result;
-        while (!feof(p)) {
-            if (fgets(buffer, sizeof(buffer), p) != nullptr)
-                result += str2wstr(buffer);
+        try {
+            while (!feof(p)) {
+                if (fgets(buffer, sizeof(buffer), p) != nullptr)
+                    result += str2wstr(buffer);
+            }
+        } catch (...) {
+            pclose(p);
+            throw;
         }
-
-        pclose(p);
-
+        int status = pclose(p);
+        if (WEXITSTATUS(status) != 0)
+            THROW_EXCEPTION(ExceptionType::CUSSTOM_ERROR, result);
         LogService::LogCommandResult(logProperty, result);
         return result;
     }
