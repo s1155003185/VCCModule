@@ -6,5 +6,5 @@ namespace vcc
     #define PATH std::filesystem::path
 
     // string
-    constexpr auto NL = "\n";
+    constexpr auto NL = L"\n";
 }

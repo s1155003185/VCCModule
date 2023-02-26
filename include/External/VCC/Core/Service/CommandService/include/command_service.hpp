@@ -16,6 +16,6 @@ namespace vcc
             ~CommandService() {}
 
             static wstring Execute(string cmd);
-            static wstring Execute(LogProperty &logProperty, string cmd);
+            static wstring Execute(LogProperty &logProperty, wstring id, wstring userId, string cmd);
     };
 }

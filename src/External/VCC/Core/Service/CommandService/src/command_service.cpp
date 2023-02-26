@@ -11,12 +11,12 @@ namespace vcc
     wstring CommandService::Execute(string cmd)
     {
         LogProperty defaultLogProperty;
-        return CommandService::Execute(defaultLogProperty, cmd);
+        return CommandService::Execute(defaultLogProperty, L"", L"", cmd);
     }
 
-    wstring CommandService::Execute(LogProperty &logProperty, string cmd)
+    wstring CommandService::Execute(LogProperty &logProperty, wstring id, wstring userId, string cmd)
     {
-        LogService::LogCommand(logProperty, str2wstr(cmd));
+        LogService::LogCommand(logProperty, id, userId, str2wstr(cmd));
 
         char buffer[1024];
         FILE* p = popen(cmd.c_str(), "r");
@@ -36,7 +36,7 @@ namespace vcc
         int status = pclose(p);
         if (WEXITSTATUS(status) != 0)
             THROW_EXCEPTION(ExceptionType::CUSSTOM_ERROR, result);
-        LogService::LogCommandResult(logProperty, result);
+        LogService::LogCommandResult(logProperty, id, userId, result);
         return result;
     }
 }
