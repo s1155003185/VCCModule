@@ -15,10 +15,10 @@ namespace vcc
     class BaseException : public IException
     {
         private:
-            ExceptionType _Type = ExceptionType::CUSSTOM_ERROR;
+            ExceptionType _Type = ExceptionType::CUSTOM_ERROR;
             wstring _Message = L"";
         protected:
-            BaseException() : BaseException(ExceptionType::CUSSTOM_ERROR) {}
+            BaseException() : BaseException(ExceptionType::CUSTOM_ERROR) {}
             BaseException(ExceptionType type) : BaseException(type, L"") {}
             BaseException(ExceptionType type, wstring message)
             {

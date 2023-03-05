@@ -18,6 +18,8 @@ TEST(LogServiceTest, LogTest)
     property.SetIsConsoleLog(false);
     property.SetIsLogCommand(true);
     property.SetIsLogCommandResult(true);
+    property.SetIsLogProcess(true);
+    property.SetIsLogProcessResult(true);
     property.SetIsLogSQL(true);
     property.SetIsLogSQLResult(true);
     property.SetFilePath(filePath);
@@ -26,6 +28,8 @@ TEST(LogServiceTest, LogTest)
     wstring logErrorStr = LogService::LogError(property, L"id", L"user", L"message");
     wstring logCommandStr = LogService::LogCommand(property, L"id", L"user", L"message");
     wstring logCommandResultStr = LogService::LogCommandResult(property, L"id", L"user", L"message");
+    wstring logProcessStr = LogService::LogProcess(property, L"id", L"user", L"message");
+    wstring logProcessResultStr = LogService::LogProcessResult(property, L"id", L"user", L"message");
     wstring logSQLStr = LogService::LogSQL(property, L"id", L"user", L"message");
     wstring logSQLResultStr = LogService::LogSQLResult(property, L"id", L"user", L"message");
     EXPECT_EQ(logInfoStr, ReadFileSingleLline(filePath, 0));
@@ -33,6 +37,8 @@ TEST(LogServiceTest, LogTest)
     EXPECT_EQ(logErrorStr, ReadFileSingleLline(filePath, 2));
     EXPECT_EQ(logCommandStr, ReadFileSingleLline(filePath, 3));
     EXPECT_EQ(logCommandResultStr, ReadFileSingleLline(filePath, 4));
-    EXPECT_EQ(logSQLStr, ReadFileSingleLline(filePath, 5));
-    EXPECT_EQ(logSQLResultStr, ReadFileSingleLline(filePath, 6));
+    EXPECT_EQ(logProcessStr, ReadFileSingleLline(filePath, 5));
+    EXPECT_EQ(logProcessResultStr, ReadFileSingleLline(filePath, 6));
+    EXPECT_EQ(logSQLStr, ReadFileSingleLline(filePath, 7));
+    EXPECT_EQ(logSQLResultStr, ReadFileSingleLline(filePath, 8));
 }

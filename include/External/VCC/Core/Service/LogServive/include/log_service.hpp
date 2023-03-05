@@ -56,6 +56,21 @@ namespace vcc
 		static wstring LogCommandResult(LogProperty &logProperty, wstring id, wstring message);
 		static wstring LogCommandResult(LogProperty &logProperty, wstring id, wstring userid, wstring message);
 		
+		// Process
+		static wstring LogProcess(wstring message);
+		static wstring LogProcess(wstring id, wstring message);
+		static wstring LogProcess(wstring id, wstring userid, wstring message);
+		static wstring LogProcess(LogProperty &logProperty, wstring message);
+		static wstring LogProcess(LogProperty &logProperty, wstring id, wstring message);
+		static wstring LogProcess(LogProperty &logProperty, wstring id, wstring userid, wstring message);
+
+		static wstring LogProcessResult(wstring message);
+		static wstring LogProcessResult(wstring id, wstring message);
+		static wstring LogProcessResult(wstring id, wstring userid, wstring message);
+		static wstring LogProcessResult(LogProperty &logProperty, wstring message);
+		static wstring LogProcessResult(LogProperty &logProperty, wstring id, wstring message);
+		static wstring LogProcessResult(LogProperty &logProperty, wstring id, wstring userid, wstring message);
+		
 		// SQL
 		static wstring LogSQL(wstring message);
 		static wstring LogSQL(wstring id, wstring message);

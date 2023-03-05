@@ -16,6 +16,9 @@ namespace vcc
         // Command
         GETSET(bool, IsLogCommand, true);
         GETSET(bool, IsLogCommandResult, true);
+        // Process
+        GETSET(bool, IsLogProcess, true);
+        GETSET(bool, IsLogProcessResult, true);
         // SQL
         GETSET(bool, IsLogSQL, true);
         GETSET(bool, IsLogSQLResult, true);

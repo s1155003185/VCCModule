@@ -11,5 +11,5 @@ enum class ExceptionType
 	FILE_NOT_FOUND,
 	FILE_CANNOT_OPEN,
     // vccobj - end
-    CUSSTOM_ERROR = 9999,
+    CUSTOM_ERROR = 9999,
 };

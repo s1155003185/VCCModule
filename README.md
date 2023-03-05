@@ -13,6 +13,11 @@ Remove first layer README and LICENCE. But should not remove LICENCE under Exter
 #### Note
 As c++ are upgrading since c++17 and avoid too many versions. VCCModule default version is c++29 (or the version that c++ upgrade completed). VCCModule will force update if g++ support new version.
 
+#### Pending: Full Review
+Review Exception
+Review Class
+Review Enum
+
 #### Status:
 -	Active: Keep changing. Not recommend to use.
 -	Stable: Workable.
@@ -25,6 +30,7 @@ As c++ are upgrading since c++17 and avoid too many versions. VCCModule default 
 -	Exception (Stable)
 -	Log Service (Stable)
 -   Command Service (Stable)
+-   Process Service (Stable)
 -	Action Manager (Stable)
 -	Property Accessor (Pending)
 ### Common:
@@ -46,6 +52,9 @@ When update, drop all External/vcc folders then download the latest one.
 -	Remove unittest/External to skip running unit test of VCCModule.
 
 ## Release Log
+
+### 2023-03-05 Process
+-	Process
 
 ### 2023-02-25 Command
 -	Command

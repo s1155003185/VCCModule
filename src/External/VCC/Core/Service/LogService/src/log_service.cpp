@@ -210,6 +210,76 @@ namespace vcc
 		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
 	}
 
+	wstring LogService::LogProcess(wstring message)
+	{
+		LogProperty defaultProperty;
+		return LogService::LogProcess(defaultProperty, message);
+	}
+
+	wstring LogService::LogProcess(wstring id, wstring message)
+	{
+		LogProperty defaultProperty;
+		return LogService::LogProcess(defaultProperty, id, message);
+	}
+
+	wstring LogService::LogProcess(wstring id, wstring userid, wstring message)
+	{
+		LogProperty defaultProperty;
+		return LogService::LogProcess(defaultProperty, id, userid, message);
+	}
+
+	wstring LogService::LogProcess(LogProperty &logProperty, wstring message)
+	{
+		return LogService::LogProcess(logProperty, L"", L"", message);
+	}
+
+	wstring LogService::LogProcess(LogProperty &logProperty, wstring id, wstring message)
+	{
+		return LogService::LogProcess(logProperty, id, L"", message);
+	}
+
+	wstring LogService::LogProcess(LogProperty &logProperty, wstring id, wstring userid, wstring message)
+	{
+		if (!logProperty.GetIsLogProcess())
+			return L"";
+		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+	}
+
+	wstring LogService::LogProcessResult(wstring message)
+	{
+		LogProperty defaultProperty;
+		return LogService::LogProcessResult(defaultProperty, message);
+	}
+
+	wstring LogService::LogProcessResult(wstring id, wstring message)
+	{
+		LogProperty defaultProperty;
+		return LogService::LogProcessResult(defaultProperty, id, message);
+	}
+
+	wstring LogService::LogProcessResult(wstring id, wstring userid, wstring message)
+	{
+		LogProperty defaultProperty;
+		return LogService::LogProcessResult(defaultProperty, id, userid, message);
+	}
+
+	wstring LogService::LogProcessResult(LogProperty &logProperty, wstring message)
+	{
+		return LogService::LogProcessResult(logProperty, L"", L"", message);
+	}
+
+	wstring LogService::LogProcessResult(LogProperty &logProperty, wstring id, wstring message)
+	{
+		return LogService::LogProcessResult(logProperty, id, L"", message);
+	}
+
+	wstring LogService::LogProcessResult(LogProperty &logProperty, wstring id, wstring userid, wstring message)
+	{
+		if (!logProperty.GetIsLogProcessResult())
+			return L"";
+		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+	}
+
 	wstring LogService::LogSQL(wstring message)
 	{
 		LogProperty defaultProperty;

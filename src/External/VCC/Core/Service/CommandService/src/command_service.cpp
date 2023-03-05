@@ -21,7 +21,7 @@ namespace vcc
         char buffer[1024];
         FILE* p = popen(cmd.c_str(), "r");
         if (p == nullptr)
-            THROW_EXCEPTION(ExceptionType::CUSSTOM_ERROR, L"Cannot Execute Command: " + str2wstr(cmd));
+            THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, L"Cannot Execute Command: " + str2wstr(cmd));
     
         wstring result;
         try {
@@ -29,13 +29,13 @@ namespace vcc
                 if (fgets(buffer, sizeof(buffer), p) != nullptr)
                     result += str2wstr(buffer);
             }
-        } catch (...) {
+        } catch (exception &e) {
             pclose(p);
-            throw;
+            THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(e.what()));
         }
         int status = pclose(p);
         if (WEXITSTATUS(status) != 0)
-            THROW_EXCEPTION(ExceptionType::CUSSTOM_ERROR, result);
+            THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, result);
         LogService::LogCommandResult(logProperty, id, userId, result);
         return result;
     }
