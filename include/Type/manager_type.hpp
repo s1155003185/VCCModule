@@ -4,6 +4,7 @@ enum class ManagerType
 {
     NA = 0,
     // vccobj - begin
-    Action
+    Action,
+    Git,
     // vccobj - end
 };

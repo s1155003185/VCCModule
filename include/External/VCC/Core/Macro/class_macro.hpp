@@ -31,7 +31,13 @@ namespace vcc
     #define STATICGET(type, var, def) \
     public: \
         static type Get##var() { return def; }
-        
+
+    #define GETOBJ(type, var) \
+    private: \
+        type _##var; \
+    public: \
+        type *Get##var() { lock_guard<mutex> lock(__mutex); return &_##var; }\
+
     // vector
     #define VECTOR(type, var) \
     private: \

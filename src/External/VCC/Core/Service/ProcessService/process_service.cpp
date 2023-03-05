@@ -41,8 +41,6 @@ namespace vcc
                 // process
                 int pipefd_stdout[2];
                 int pipefd_stderr[2];
-                char buf_stdout[1024];
-                char buf_stderr[1024];
                 int status;
 
                 // pipe

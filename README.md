@@ -53,8 +53,9 @@ When update, drop all External/vcc folders then download the latest one.
 
 ## Release Log
 
-### 2023-03-05 Process
+### 2023-03-05 Process, Git
 -	Process
+-   Git init
 
 ### 2023-02-25 Command
 -	Command
