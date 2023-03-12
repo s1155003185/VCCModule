@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+
+using namespace std;
 
 namespace vcc
 {
@@ -7,5 +10,8 @@ namespace vcc
         protected:
             IObject() {}
             ~IObject() {}
+
+        public:
+            virtual wstring GetKey() = 0;
     };
 }

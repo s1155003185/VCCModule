@@ -16,7 +16,9 @@ class ClassMacroTestClassElement : public BaseObject
     GETSET(int, Index, 0);
     public:
         ClassMacroTestClassElement(int i) : BaseObject(ObjectType::NA) { this->_Index = i; }
-        ~ClassMacroTestClassElement() {}
+        virtual ~ClassMacroTestClassElement() {}
+        
+        virtual wstring GetKey() override { return L""; }
 };
 
 class ClassMacroTestClass : public BaseObject
@@ -31,7 +33,9 @@ class ClassMacroTestClass : public BaseObject
 
     public:
         ClassMacroTestClass() : BaseObject(ObjectType::NA) {}
-        ~ClassMacroTestClass() {}
+        virtual ~ClassMacroTestClass() {}
+        
+        virtual wstring GetKey() override { return L""; }
 };
 
 TEST(ClassMacroTest, GETSET) 
