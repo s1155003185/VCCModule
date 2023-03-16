@@ -11,16 +11,15 @@ namespace vcc
         IAction() {}
         ~IAction() {}
 
-        virtual void DoRedo() = 0;
-        virtual void DoUndo() = 0;
+        virtual void _DoRedo() = 0;
+        virtual void _DoUndo() = 0;
 
-        virtual wstring GetRedoMessage() = 0;
-        virtual wstring GetUndoMessage() = 0;
+        virtual wstring _GetRedoMessage() = 0;
+        virtual wstring _GetUndoMessage() = 0;
 
-        virtual void LogRedo() = 0;
-        virtual void LogUndo() = 0;
-            
     public:
+        virtual void SetSeqNo(size_t seqNo) = 0;
+        virtual size_t GetSeqNo() = 0;
         virtual wstring GetMessage() = 0;
         
         virtual void Redo() = 0;

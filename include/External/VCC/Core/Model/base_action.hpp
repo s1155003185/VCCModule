@@ -12,31 +12,43 @@ namespace vcc
         THREAD_SAFE
         GET(ActionType, Type, ActionType::NA)
 
+        private:
+            size_t _SeqNo = 0;
+            BaseAction() {}
         protected:
-            BaseAction() : BaseAction(ActionType::NA) {}
             BaseAction(ActionType type) : IAction() { this->_Type = type; }
             ~BaseAction() {}
 
-            virtual void LogRedo() override
-            {
-                LogService::LogInfo(this->GetRedoMessage());
+            virtual void _LogRedo() 
+            { 
+                wstring message = this->_GetRedoMessage();
+                if (!message.empty()) 
+                    LogService::LogInfo(message); 
+            }
+            
+            virtual void _LogUndo() 
+            { 
+                wstring message = this->_GetUndoMessage();
+                if (!message.empty()) 
+                    LogService::LogInfo(message); 
             }
 
-            virtual void LogUndo() override
-            {
-                LogService::LogInfo(this->GetUndoMessage());
-            }
+        public:   
+            virtual size_t GetSeqNo() override { LOCK_GUAND; return this->_SeqNo; }
+            virtual void SetSeqNo(size_t seqNo) override { LOCK_GUAND; this->_SeqNo = seqNo; }
 
-            virtual void Redo() override
+            virtual void Redo() override 
             {
-                this->DoRedo();
-                this->LogRedo();
+                LOCK_GUAND;
+                this->_DoRedo();
+                this->_LogRedo();
             }
 
             virtual void Undo() override
             {
-                this->DoUndo();
-                this->LogUndo();
+                LOCK_GUAND;
+                this->_DoUndo();
+                this->_LogUndo();
             }
     };
 }

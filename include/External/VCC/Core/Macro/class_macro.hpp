@@ -14,6 +14,8 @@ namespace vcc
     public: \
         mutex *GetMutex() { return &__mutex; }
 
+    #define LOCK_GUAND lock_guard<mutex> lock(__mutex)
+
     // general
     #define GETSET(type, var, def) \
     private: \
