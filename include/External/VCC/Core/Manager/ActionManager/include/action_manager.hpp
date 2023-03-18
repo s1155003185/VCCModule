@@ -14,6 +14,7 @@ namespace vcc
         GETSET(int64_t, MaxActionListSize, 100)
         MAP(int64_t, shared_ptr<IAction>, Actions)
         GET(int64_t, CurrentSeqNo, -1)
+        GET(int64_t, MaxSeqNo, -1)
 
     private:
         int64_t _GetFirstSeqNo(bool fromBeginning);
@@ -22,6 +23,7 @@ namespace vcc
         int64_t _RemoveAction(int64_t noOfAction, bool fromBeginning);
         int64_t _ChopActionListToSize(int64_t size, bool fromBeginning);
         int64_t _Clear();
+        int64_t _Truncate();
     public:
         ActionManager() : BaseManager(ManagerType::Action) {}
         ~ActionManager() {}
@@ -40,5 +42,6 @@ namespace vcc
         int64_t ChopActionListToSize(int64_t size);
 
         int64_t Clear();
+        int64_t Truncate();
     };
 }

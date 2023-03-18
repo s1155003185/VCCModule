@@ -49,7 +49,7 @@ class ActionManagerTest : public testing::Test
 
         void ResetWithFiveActions()
         {
-            this->_Manager.Clear();
+            this->_Manager.Truncate();
             this->_Manager.DoAction(this->CreateAction(0));
             this->_Manager.DoAction(this->CreateAction(1));
             this->_Manager.DoAction(this->CreateAction(2));
@@ -86,6 +86,8 @@ TEST_F(ActionManagerTest, EmptyTest)
     EXPECT_EQ(manager->ChopActionListToSize(1), -1);
     // Clear
     EXPECT_EQ(manager->Clear(), -1);
+    // Truncate
+    EXPECT_EQ(manager->Truncate(), -1);
 }
 
 TEST_F(ActionManagerTest, NegativeTest) 
@@ -134,7 +136,6 @@ TEST_F(ActionManagerTest, RedoUndoTest)
     EXPECT_EQ(manager->GetActions()->at(3)->GetMessage(), L"3");
     EXPECT_EQ(manager->GetActions()->at(4)->GetMessage(), L"4");
     EXPECT_EQ(manager->GetActions()->at(5)->GetMessage(), L"10");
-
     // Redo Undo
     EXPECT_EQ(manager->Undo(), 4);
     EXPECT_EQ(manager->Undo(2), 2);
@@ -173,4 +174,27 @@ TEST_F(ActionManagerTest, ChopTest)
     EXPECT_EQ(manager->GetActions()->at(firstSeqNo + 1)->GetMessage(), L"2");
     EXPECT_EQ(manager->GetActions()->at(firstSeqNo + 2)->GetMessage(), L"3");
     EXPECT_EQ(manager->GetActions()->at(firstSeqNo + 3)->GetMessage(), L"4");
+
+}
+
+TEST_F(ActionManagerTest, SeqNoContunusTest) 
+{
+    ActionManager *manager = this->GetManager();
+    // Chop All and seq no can continus
+    this->ResetWithFiveActions();
+    EXPECT_EQ(manager->ChopActionListToSize(0), -1);
+    EXPECT_TRUE(manager->GetActions()->size() == 0);
+    EXPECT_EQ(manager->DoAction(this->CreateAction(10)), 5);
+
+    // Clear
+    this->ResetWithFiveActions();
+    EXPECT_EQ(manager->Clear(), -1);
+    EXPECT_TRUE(manager->GetActions()->size() == 0);
+    EXPECT_EQ(manager->DoAction(this->CreateAction(10)), 5);
+
+    // Truncate
+    this->ResetWithFiveActions();
+    EXPECT_EQ(manager->Truncate(), -1);
+    EXPECT_TRUE(manager->GetActions()->size() == 0);
+    EXPECT_EQ(manager->DoAction(this->CreateAction(10)), 0);
 }

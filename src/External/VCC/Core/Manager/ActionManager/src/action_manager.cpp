@@ -62,6 +62,12 @@ namespace vcc
         return this->_CurrentSeqNo;
     }
 
+    int64_t ActionManager::_Truncate()
+    {
+        this->_MaxSeqNo = -1;
+        return this->_Clear();
+    }
+
     int64_t ActionManager::GetFirstSeqNo()
     {
         LOCK_GUAND;
@@ -78,15 +84,18 @@ namespace vcc
     {
         LOCK_GUAND;
         // 1. Remove the action after index
+        // 2. Refresh maxSeqNo to last no
         // 2. Append action
         // 3. Do Action
         // 4. Current Index + 1
         this->_RemoveAction(this->_GetFirstSeqNo(false) - this->_CurrentSeqNo, false);
-        int64_t nextSeqNo = this->_GetFirstSeqNo(false) + 1;
+        if (this->_Actions.size() > 0)
+            this->_MaxSeqNo = this->_GetFirstSeqNo(false);
+        int64_t nextSeqNo = this->_MaxSeqNo + 1;
         action->SetSeqNo(nextSeqNo);
         this->_Actions[nextSeqNo] = action;
         action->Redo();
-        this->_CurrentSeqNo = this->_GetFirstSeqNo(false);
+        this->_MaxSeqNo = this->_CurrentSeqNo = this->_GetFirstSeqNo(false);
 
         return this->_ChopActionListToSize(this->_MaxActionListSize, true);
     }
@@ -123,5 +132,11 @@ namespace vcc
     {
         LOCK_GUAND;
         return this->_Clear();
+    }
+
+    int64_t ActionManager::Truncate()
+    {
+        LOCK_GUAND;
+        return this->_Truncate();
     }
 }
