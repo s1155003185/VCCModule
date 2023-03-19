@@ -8,8 +8,6 @@
 #include "exception_type.hpp"
 #include "file_constant.hpp"
 
-using namespace std;
-
 namespace vcc
 {
 	inline bool AppendFileSingleLline(PATH filePath, std::wstring line, bool isForce) 
@@ -38,7 +36,7 @@ namespace vcc
 		return true;
 	}
 
-	inline wstring ReadFileSingleLline(PATH filePath, int index) 
+	inline std::wstring ReadFileSingleLline(PATH filePath, int index) 
 	{
 		// 1. Check directory exists
 		// 2. Check file exists

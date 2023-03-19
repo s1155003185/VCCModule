@@ -21,14 +21,14 @@ namespace vcc
 
             virtual void _LogRedo() 
             { 
-                wstring message = this->_GetRedoMessage();
+                std::wstring message = this->_GetRedoMessage();
                 if (!message.empty()) 
                     LogService::LogInfo(message); 
             }
             
             virtual void _LogUndo() 
             { 
-                wstring message = this->_GetUndoMessage();
+                std::wstring message = this->_GetUndoMessage();
                 if (!message.empty()) 
                     LogService::LogInfo(message); 
             }

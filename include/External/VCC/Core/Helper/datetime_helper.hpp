@@ -51,7 +51,7 @@ namespace vcc
         auto ts = std::chrono::system_clock::now();
         std::wstring dateTimeStr = GetDatetimeString(std::chrono::system_clock::to_time_t(ts));
         auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(ts.time_since_epoch()) % 1000;
-        auto nowMsStr = to_string(nowMs.count());
+        auto nowMsStr = std::to_string(nowMs.count());
         return dateTimeStr + str2wstr("." + PadLeft(nowMsStr, 3, '0'));
     }
 }

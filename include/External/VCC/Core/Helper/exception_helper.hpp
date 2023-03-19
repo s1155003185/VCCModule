@@ -7,8 +7,6 @@
 #include "log_service.hpp"
 #include "string_helper.hpp"
 
-using namespace std;
-
 namespace vcc
 {
     inline void HandleException(LogProperty &logProperty, exception *ex)
@@ -17,7 +15,7 @@ namespace vcc
         if (iex != nullptr)
             LogService::LogError(logProperty, iex->GetErrorMessage());
         else
-            LogService::LogError(logProperty, str2wstr(string(ex->what())));
+            LogService::LogError(logProperty, str2wstr(std::string(ex->what())));
     }
 
     inline void HandleException(exception *ex)

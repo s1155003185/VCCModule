@@ -5,8 +5,6 @@
 
 #include "log_property.hpp"
 
-using namespace std;
-
 namespace vcc
 {
     class ProcessService : public BaseService
@@ -15,7 +13,7 @@ namespace vcc
             ProcessService() : BaseService() {}
             ~ProcessService() {}
 
-            static wstring Execute(string process, string command);
-            static wstring Execute(LogProperty &logProperty, wstring id, wstring userId, string process, string command);
+            static std::wstring Execute(std::string process, std::string command);
+            static std::wstring Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::string process, std::string command);
     };
 }

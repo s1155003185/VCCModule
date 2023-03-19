@@ -19,13 +19,13 @@ class ActionManagerTestClass final : public BaseAction
         virtual void _DoRedo() override {}
         virtual void _DoUndo() override {}
 
-        virtual wstring _GetRedoMessage() override { return L""; }
-        virtual wstring _GetUndoMessage() override { return L""; }
+        virtual std::wstring _GetRedoMessage() override { return L""; }
+        virtual std::wstring _GetUndoMessage() override { return L""; }
 
         virtual void _LogRedo() override {}
         virtual void _LogUndo() override {}
     public:
-        virtual wstring GetMessage() override { return std::to_wstring(uuid); }
+        virtual std::wstring GetMessage() override { return std::to_wstring(uuid); }
  
         ActionManagerTestClass(int uuid) : BaseAction(ActionType::NA) { this->uuid = uuid; }
         ~ActionManagerTestClass() {}
@@ -42,7 +42,7 @@ class ActionManagerTest : public testing::Test
             return &this->_Manager;
         }
     
-        shared_ptr<IAction> CreateAction(int index)
+        std::shared_ptr<IAction> CreateAction(int index)
         {
             return make_shared<ActionManagerTestClass>(index);
         }

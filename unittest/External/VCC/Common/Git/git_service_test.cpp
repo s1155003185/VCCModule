@@ -32,7 +32,7 @@ class GitServiceTest : public testing::Test
 
 TEST_F(GitServiceTest, Version)
 {
-    wstring version = GitService::GetVersion(*this->GetLogPropery(), L"");
+    std::wstring version = GitService::GetVersion(*this->GetLogPropery(), L"");
     EXPECT_TRUE(regex_match(version, wregex(L"[0-9]+.[0-9]+.[0-9]+")));
 }
 

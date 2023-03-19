@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 
-using namespace std;
-
 namespace vcc
 {
     class IObject
@@ -12,6 +10,6 @@ namespace vcc
             ~IObject() {}
 
         public:
-            virtual wstring GetKey() = 0;
+            virtual std::wstring GetKey() = 0;
     };
 }

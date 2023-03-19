@@ -13,21 +13,19 @@
 #include "log_service.hpp"
 #include "string_helper.hpp"
 
-using namespace std;
-
 namespace vcc
 {
-        wstring ProcessService::Execute(string process, string command)
+        std::wstring ProcessService::Execute(std::string process, std::string command)
         {
             LogProperty defaultProperty;
             return ProcessService::Execute(defaultProperty, str2wstr(process), L"", process, command);
         }
 
-        wstring ProcessService::Execute(LogProperty &logProperty, wstring id, wstring userId, string process, string command)
+        std::wstring ProcessService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::string process, std::string command)
         {
             LogService::LogProcess(logProperty, id, userId, str2wstr(command));
 
-            wstring result = L"";
+            std::wstring result = L"";
             try {
                 // convert to token
                 vector<char *> tokens;
@@ -75,14 +73,14 @@ namespace vcc
                 FILE *fStderr = fdopen(pipefd_stderr[0], "r");
 
                 char ch;
-                string tmpResult;
+                std::string tmpResult;
                 while (!feof(fStdout)) {
                     ch = fgetc(fStdout);
                     tmpResult += ch;
                 }
                 result = str2wstr(tmpResult);
 
-                string error;
+                std::string error;
                 while (!feof(fStderr)) {
                     ch = fgetc(fStderr);
                     error += ch;
@@ -91,7 +89,7 @@ namespace vcc
                 if (status != 0)
                     throw runtime_error(error);
             } catch (exception &e) {
-                THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(string(e.what())));
+                THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(std::string(e.what())));
             }
             LogService::LogProcessResult(logProperty, id, userId, result);
             return result;

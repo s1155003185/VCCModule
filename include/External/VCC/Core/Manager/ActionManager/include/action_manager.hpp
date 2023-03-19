@@ -5,14 +5,12 @@
 #include <memory>
 #include <stdint.h>
 
-using namespace std;
-
 namespace vcc
 {
     class ActionManager : public BaseManager
     {
         GETSET(int64_t, MaxActionListSize, 100)
-        MAP(int64_t, shared_ptr<IAction>, Actions)
+        MAP(int64_t, std::shared_ptr<IAction>, Actions)
         GET(int64_t, CurrentSeqNo, -1)
         GET(int64_t, MaxSeqNo, -1)
 
@@ -31,7 +29,7 @@ namespace vcc
         int64_t GetFirstSeqNo();
         int64_t GetLastSeqNo();
 
-        int64_t DoAction(shared_ptr<IAction> action);
+        int64_t DoAction(std::shared_ptr<IAction> action);
         
         int64_t Redo(int64_t noOfStep = 1);
         int64_t RedoToSeqNo(int64_t seqNo);

@@ -18,24 +18,24 @@ class ClassMacroTestClassElement : public BaseObject
         ClassMacroTestClassElement(int i) : BaseObject(ObjectType::NA) { this->_Index = i; }
         virtual ~ClassMacroTestClassElement() {}
         
-        virtual wstring GetKey() override { return L""; }
+        virtual std::wstring GetKey() override { return L""; }
 };
 
 class ClassMacroTestClass : public BaseObject
 {
     GETSET(int, N, 0)
     VECTOR(int, V)
-    VECTOR(shared_ptr<ClassMacroTestClassElement>, VO)
+    VECTOR(std::shared_ptr<ClassMacroTestClassElement>, VO)
     SET(int, S)
-    SET(shared_ptr<ClassMacroTestClassElement>, SO)
-    MAP(int, wstring, M)
-    MAP(string, vector<shared_ptr<ClassMacroTestClassElement>>, MO)
+    SET(std::shared_ptr<ClassMacroTestClassElement>, SO)
+    MAP(int, std::wstring, M)
+    MAP(string, vector<std::shared_ptr<ClassMacroTestClassElement>>, MO)
 
     public:
         ClassMacroTestClass() : BaseObject(ObjectType::NA) {}
         virtual ~ClassMacroTestClass() {}
         
-        virtual wstring GetKey() override { return L""; }
+        virtual std::wstring GetKey() override { return L""; }
 };
 
 TEST(ClassMacroTest, GETSET) 
@@ -96,7 +96,7 @@ TEST(ClassMacroTest, Vector)
     EXPECT_EQ(testClass->GetVO()->at(2)->GetIndex(), 4);
     EXPECT_EQ(testClass->GetVO()->at(3)->GetIndex(), 3);
 
-    vector<shared_ptr<ClassMacroTestClassElement>> insertVectorO { make_shared<ClassMacroTestClassElement>(10), make_shared<ClassMacroTestClassElement>(11), make_shared<ClassMacroTestClassElement>(12) };
+    vector<std::shared_ptr<ClassMacroTestClassElement>> insertVectorO { make_shared<ClassMacroTestClassElement>(10), make_shared<ClassMacroTestClassElement>(11), make_shared<ClassMacroTestClassElement>(12) };
     testClass->InsertVO(0, insertVectorO);
     EXPECT_TRUE(testClass->GetVO()->size() == 7);
     EXPECT_EQ(testClass->GetVO()->at(0)->GetIndex(), 10);

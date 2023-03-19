@@ -4,8 +4,6 @@
 
 #include "exception_type.hpp"
 
-using namespace std;
-
 namespace vcc
 {
     class IException : public std::exception
@@ -16,7 +14,7 @@ namespace vcc
         public:
             virtual ExceptionType GetErrorType() = 0;
             virtual int64_t GetErrorCode() = 0;
-            virtual wstring GetErrorMessage() = 0;
-            virtual void SetErrorMessage(wstring message) = 0;
+            virtual std::wstring GetErrorMessage() = 0;
+            virtual void SetErrorMessage(std::wstring message) = 0;
     };
 }

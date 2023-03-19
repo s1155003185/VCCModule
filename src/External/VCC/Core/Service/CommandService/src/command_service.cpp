@@ -8,13 +8,13 @@
 
 namespace vcc
 {
-    wstring CommandService::Execute(string cmd)
+    std::wstring CommandService::Execute(std::string cmd)
     {
         LogProperty defaultLogProperty;
         return CommandService::Execute(defaultLogProperty, L"", L"", cmd);
     }
 
-    wstring CommandService::Execute(LogProperty &logProperty, wstring id, wstring userId, string cmd)
+    std::wstring CommandService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::string cmd)
     {
         LogService::LogCommand(logProperty, id, userId, str2wstr(cmd));
 
@@ -23,7 +23,7 @@ namespace vcc
         if (p == nullptr)
             THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, L"Cannot Execute Command: " + str2wstr(cmd));
     
-        wstring result;
+        std::wstring result;
         try {
             while (!feof(p)) {
                 if (fgets(buffer, sizeof(buffer), p) != nullptr)

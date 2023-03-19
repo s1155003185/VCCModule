@@ -11,13 +11,13 @@ namespace vcc
             GitService() : BaseService() {}
             ~GitService() {}
 
-        static wstring Execute(string command);
-        static wstring Execute(LogProperty &logProperty, wstring userId, string command);
+        static std::wstring Execute(std::string command);
+        static std::wstring Execute(LogProperty &logProperty, std::wstring userId, std::string command);
 
-        static wstring GetVersion();
-        static wstring GetVersion(LogProperty &logProperty, wstring userId);
+        static std::wstring GetVersion();
+        static std::wstring GetVersion(LogProperty &logProperty, std::wstring userId);
 
-        static void InitializeWorkspace(string workspace);
-        static void InitializeWorkspace(LogProperty &logProperty, wstring userId, string workspace);
+        static void InitializeWorkspace(std::string workspace);
+        static void InitializeWorkspace(LogProperty &logProperty, std::wstring userId, std::string workspace);
     };
 }

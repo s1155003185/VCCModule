@@ -17,7 +17,7 @@ namespace vcc
 	private:
 		Exception() {}
 	public:
-		Exception(ExceptionType type, wstring message) : BaseException(type, message) {}
+		Exception(ExceptionType type, std::wstring message) : BaseException(type, message) {}
 		~Exception() {}
 	};
 }
