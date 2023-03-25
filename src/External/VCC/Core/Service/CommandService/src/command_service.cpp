@@ -8,20 +8,20 @@
 
 namespace vcc
 {
-    std::wstring CommandService::Execute(std::string cmd)
+    std::wstring CommandService::Execute(std::wstring cmd)
     {
         LogProperty defaultLogProperty;
         return CommandService::Execute(defaultLogProperty, L"", L"", cmd);
     }
 
-    std::wstring CommandService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::string cmd)
+    std::wstring CommandService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::wstring cmd)
     {
-        LogService::LogCommand(logProperty, id, userId, str2wstr(cmd));
+        LogService::LogCommand(logProperty, id, userId, cmd);
 
         char buffer[1024];
-        FILE* p = popen(cmd.c_str(), "r");
+        FILE* p = popen(wstr2str(cmd).c_str(), "r");
         if (p == nullptr)
-            THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, L"Cannot Execute Command: " + str2wstr(cmd));
+            THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, L"Cannot Execute Command: " + cmd);
     
         std::wstring result;
         try {

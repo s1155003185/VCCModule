@@ -13,7 +13,7 @@ TEST(CommandTest, Normal)
     logProperty.SetIsConsoleLog(false);
     logProperty.SetIsLogCommand(false);
     logProperty.SetIsLogCommandResult(false);
-    EXPECT_TRUE(HasPrefix(CommandService::Execute(logProperty, L"", L"", "git --version"), L"git version"));
+    EXPECT_TRUE(HasPrefix(CommandService::Execute(logProperty, L"", L"", L"git --version"), L"git version"));
 }
 
 // Terminal cannot cap exception console log

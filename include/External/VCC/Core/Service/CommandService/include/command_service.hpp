@@ -13,7 +13,7 @@ namespace vcc
             CommandService() : BaseService() {}
             ~CommandService() {}
 
-            static std::wstring Execute(std::string cmd);
-            static std::wstring Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::string cmd);
+            static std::wstring Execute(std::wstring cmd);
+            static std::wstring Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::wstring cmd);
     };
 }
