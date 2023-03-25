@@ -9,13 +9,13 @@
 
 namespace vcc
 {
-    std::wstring GitService::Execute(std::string command)
+    std::wstring GitService::Execute(std::wstring command)
     {
         LogProperty defaultLogProperty;
         return GitService::Execute(defaultLogProperty, L"", command);
     }
     
-    std::wstring GitService::Execute(LogProperty &logProperty, std::wstring userId, std::string command)
+    std::wstring GitService::Execute(LogProperty &logProperty, std::wstring userId, std::wstring command)
     {
         return ProcessService::Execute(logProperty, GIT_LOG_ID, userId, GIT_PROCESS_ID, command);
     }
@@ -28,7 +28,7 @@ namespace vcc
     
     std::wstring GitService::GetVersion(LogProperty &logProperty, std::wstring userId)
     {
-        std::string cmd = "git --version";
+        std::wstring cmd = L"git --version";
         std::wstring cmdResult = ProcessService::Execute(logProperty, GIT_LOG_ID, userId, GIT_PROCESS_ID, cmd);
         
         std::wsmatch m;
@@ -37,17 +37,17 @@ namespace vcc
         return L"";
     }
 
-    void GitService::InitializeWorkspace(std::string workspace)
+    void GitService::InitializeWorkspace(std::wstring workspace)
     {
         LogProperty defaultLogProperty;
         GitService::InitializeWorkspace(defaultLogProperty, L"", workspace);
     }
 
-    void GitService::InitializeWorkspace(LogProperty &logProperty, std::wstring userId, std::string workspace)
+    void GitService::InitializeWorkspace(LogProperty &logProperty, std::wstring userId, std::wstring workspace)
     {
-        std::string cmd = "git init";
+        std::wstring cmd = L"git init";
         if (!workspace.empty())
-            cmd += " " + workspace;
+            cmd += L" " + workspace;
         ProcessService::Execute(logProperty, GIT_LOG_ID, userId, GIT_PROCESS_ID, cmd);
     }
 }

@@ -15,79 +15,103 @@
 
 namespace vcc
 {
-        std::wstring ProcessService::Execute(std::string process, std::string command)
+
+        #ifdef _WIN32
+        std::wstring ProcessService::_ExecuteWindow(std::wstring process, std::wstring command)
         {
-            LogProperty defaultProperty;
-            return ProcessService::Execute(defaultProperty, str2wstr(process), L"", process, command);
+
+        }
+        #else
+        std::wstring ProcessService::_ExecuteLinux(std::string process, std::string command)
+        {
+            std::wstring result = L"";
+            // convert to token
+            vector<char *> tokens;
+            char *token = strtok((char *)command.c_str(), " ");
+            while (token != nullptr) {
+                tokens.push_back(token);
+                token = strtok(nullptr, " ");
+            }
+            tokens.push_back(nullptr);
+
+            // process
+            int pipefd_stdout[2];
+            int pipefd_stderr[2];
+            int status;
+
+            // pipe
+            if (pipe(pipefd_stdout) < 0)
+                perror("pipe: ");
+            if (pipe(pipefd_stderr) < 0)
+                perror("pipe: ");
+
+            pid_t pid = fork();
+            if (pid < 0) {
+                perror("fork: ");
+            } else if (pid == 0) {
+                // child process
+                // duplicate writing end to stdout
+                dup2(pipefd_stdout[1], STDOUT_FILENO);
+                dup2(pipefd_stderr[1], STDERR_FILENO);
+                close(pipefd_stdout[0]);
+                close(pipefd_stdout[1]);
+                close(pipefd_stderr[0]);
+                close(pipefd_stderr[1]);
+                if (execvp(process.c_str(), tokens.data())) {
+                    perror("execvp: ");
+                    exit(-1);
+                }
+            }
+            // parent process
+            // close writing end of pipe
+            close(pipefd_stdout[1]);
+            close(pipefd_stderr[1]);
+
+            FILE *fStdout = fdopen(pipefd_stdout[0], "r");
+            FILE *fStderr = fdopen(pipefd_stderr[0], "r");
+
+            char ch;
+            std::string tmpResult;
+            while (!feof(fStdout)) {
+                ch = fgetc(fStdout);
+                tmpResult += ch;
+            }
+            result = str2wstr(tmpResult);
+
+            std::string error;
+            while (!feof(fStderr)) {
+                ch = fgetc(fStderr);
+                error += ch;
+            }
+            wait(&status);
+            if (status != 0)
+                throw runtime_error(error);
+            return result;
+        }
+        #endif
+
+        std::wstring ProcessService::_Execute(std::wstring process, std::wstring command)
+        {
+            #ifdef _WIN32
+            return ProcessService::_ExecuteWindow(process, command);
+            #else
+            return ProcessService::_ExecuteLinux(wstr2str(process), wstr2str(command));
+            #endif
         }
 
-        std::wstring ProcessService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::string process, std::string command)
+        std::wstring ProcessService::Execute(std::wstring process, std::wstring command)
         {
-            LogService::LogProcess(logProperty, id, userId, str2wstr(command));
+            LogProperty defaultProperty;
+            return ProcessService::Execute(defaultProperty, process, L"", process, command);
+        }
+
+        std::wstring ProcessService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::wstring process, std::wstring command)
+        {
+            LogService::LogProcess(logProperty, id, userId, command);
 
             std::wstring result = L"";
             try {
-                // convert to token
-                vector<char *> tokens;
-                char *token = strtok((char *)command.c_str(), " ");
-                while (token != nullptr) {
-                    tokens.push_back(token);
-                    token = strtok(nullptr, " ");
-                }
-                tokens.push_back(nullptr);
-
-                // process
-                int pipefd_stdout[2];
-                int pipefd_stderr[2];
-                int status;
-
-                // pipe
-                if (pipe(pipefd_stdout) < 0)
-                    perror("pipe: ");
-                if (pipe(pipefd_stderr) < 0)
-                    perror("pipe: ");
-
-                pid_t pid = fork();
-                if (pid < 0) {
-                    perror("fork: ");
-                } else if (pid == 0) {
-                    // child process
-                    // duplicate writing end to stdout
-                    dup2(pipefd_stdout[1], STDOUT_FILENO);
-                    dup2(pipefd_stderr[1], STDERR_FILENO);
-                    close(pipefd_stdout[0]);
-                    close(pipefd_stdout[1]);
-                    close(pipefd_stderr[0]);
-                    close(pipefd_stderr[1]);
-                    if (execvp(process.c_str(), tokens.data())) {
-                        perror("execvp: ");
-                        exit(-1);
-                    }
-                }
-                // parent process
-                // close writing end of pipe
-                close(pipefd_stdout[1]);
-                close(pipefd_stderr[1]);
-
-                FILE *fStdout = fdopen(pipefd_stdout[0], "r");
-                FILE *fStderr = fdopen(pipefd_stderr[0], "r");
-
-                char ch;
-                std::string tmpResult;
-                while (!feof(fStdout)) {
-                    ch = fgetc(fStdout);
-                    tmpResult += ch;
-                }
-                result = str2wstr(tmpResult);
-
-                std::string error;
-                while (!feof(fStderr)) {
-                    ch = fgetc(fStderr);
-                    error += ch;
-                }
-                wait(&status);
-                if (status != 0)
-                    throw runtime_error(error);
+                result = ProcessService::_Execute(process, command);
             } catch (exception &e) {
                 THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(std::string(e.what())));
             }

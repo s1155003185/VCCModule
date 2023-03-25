@@ -16,7 +16,7 @@ class GitServiceTest : public testing::Test
 {
     THREAD_SAFE
     GETOBJ(LogProperty, LogPropery);
-    GET(string, Workspace, "bin/Debug/Git/");
+    GET(wstring, Workspace, L"bin/Debug/Git/");
     public:
 
         void SetUp() override
@@ -39,6 +39,5 @@ TEST_F(GitServiceTest, Version)
 TEST_F(GitServiceTest, InitializeLocalResponse)
 {
     GitService::InitializeWorkspace(*this->GetLogPropery(), L"", this->GetWorkspace());
-    EXPECT_TRUE(filesystem::exists(this->GetWorkspace() + "/.git/HEAD"));
-
+    EXPECT_TRUE(filesystem::exists(this->GetWorkspace() + L"/.git/HEAD"));
 }
