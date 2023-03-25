@@ -1,14 +1,30 @@
 #pragma once
-#include <string>
 #include <math.h>
+#include <memory>
+#include <string>
 
 namespace vcc
 {
 	inline std::wstring str2wstr(const std::string& str)
 	{
-		wchar_t ws[2048];
-		swprintf(ws, 2048, L"%hs", str.c_str());
-		return ws;
+		if (str.empty())
+			return L"";
+		int len = str.size() + 1;
+		std::unique_ptr<wchar_t[]> p(new wchar_t[len]);
+		mbstowcs(p.get(), str.c_str(), len);
+		std::wstring wstr(p.get());
+		return wstr;
+	}
+
+	inline std::string wstr2str(const std::wstring &wstr)
+	{
+		if (wstr.empty())
+			return "";
+		int len = wstr.size() * 4 + 1;
+		std::unique_ptr<char[]> p(new char[len]);
+		wcstombs(p.get(), wstr.c_str(), len);
+		std::string str(p.get());
+		return str;
 	}
 
 	inline std::string PadLeft(const std::string str, size_t length, char c)

@@ -33,13 +33,10 @@ namespace vcc
 
             virtual const char* what() const throw () override
             {
-                // Note: Should use Message instead of what as Error Message must be std::wstring
-                // for catch exception by message
-                size_t len = this->_Message.length();
-                char *str = new char[len + 1];
-                memset(str, 0, len + 1);
-                wcstombs(str, this->_Message.c_str(), len);
-                return str;
+                std::string errMsg = wstr2str(this->_Message);
+                char *cstr = new char[strlen(errMsg.c_str()) + 1];
+                strcpy(cstr, errMsg.c_str());
+                return cstr;
             }
 
     };
