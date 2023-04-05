@@ -3,9 +3,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <sys/wait.h>
 #include <vector>
+
+#ifdef _WIN32
+// win process is implemented in process_service_win.hpp
+#include "process_service_win.hpp"
+#else
+#include <sys/wait.h>
 #include <unistd.h>
+#endif
 
 #include "exception_macro.hpp"
 #include "exception_type.hpp"
@@ -17,12 +23,12 @@ namespace vcc
 {
 
         #ifdef _WIN32
-        std::wstring ProcessService::_ExecuteWindow(std::wstring process, std::wstring command)
+        std::wstring ProcessService::_ExecuteWindow(std::wstring command)
         {
-
+            return process_service_win(command);
         }
         #else
-        std::wstring ProcessService::_ExecuteLinux(std::string process, std::string command)
+        std::wstring ProcessService::_ExecuteLinux(std::string command)
         {
             std::wstring result = L"";
             // convert to token
@@ -57,7 +63,7 @@ namespace vcc
                 close(pipefd_stdout[1]);
                 close(pipefd_stderr[0]);
                 close(pipefd_stderr[1]);
-                if (execvp(process.c_str(), tokens.data())) {
+                if (execvp(tokens[0], tokens.data())) {
                     perror("execvp: ");
                     exit(-1);
                 }
@@ -90,28 +96,28 @@ namespace vcc
         }
         #endif
 
-        std::wstring ProcessService::_Execute(std::wstring process, std::wstring command)
+        std::wstring ProcessService::_Execute(std::wstring command)
         {
             #ifdef _WIN32
-            return ProcessService::_ExecuteWindow(process, command);
+            return ProcessService::_ExecuteWindow(command);
             #else
-            return ProcessService::_ExecuteLinux(wstr2str(process), wstr2str(command));
+            return ProcessService::_ExecuteLinux(wstr2str(command));
             #endif
         }
 
-        std::wstring ProcessService::Execute(std::wstring process, std::wstring command)
+        std::wstring ProcessService::Execute(std::wstring command)
         {
             LogProperty defaultProperty;
-            return ProcessService::Execute(defaultProperty, process, L"", process, command);
+            return ProcessService::Execute(defaultProperty, L"PROCESS", L"", command);
         }
 
-        std::wstring ProcessService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::wstring process, std::wstring command)
+        std::wstring ProcessService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::wstring command)
         {
             LogService::LogProcess(logProperty, id, userId, command);
 
             std::wstring result = L"";
             try {
-                result = ProcessService::_Execute(process, command);
+                result = ProcessService::_Execute(command);
             } catch (exception &e) {
                 THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(std::string(e.what())));
             }

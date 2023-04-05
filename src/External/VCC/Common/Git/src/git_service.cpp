@@ -17,7 +17,7 @@ namespace vcc
     
     std::wstring GitService::Execute(LogProperty &logProperty, std::wstring userId, std::wstring command)
     {
-        return ProcessService::Execute(logProperty, GIT_LOG_ID, userId, GIT_PROCESS_ID, command);
+        return ProcessService::Execute(logProperty, GIT_LOG_ID, userId, command);
     }
 
     std::wstring GitService::GetVersion()
@@ -29,7 +29,7 @@ namespace vcc
     std::wstring GitService::GetVersion(LogProperty &logProperty, std::wstring userId)
     {
         std::wstring cmd = L"git --version";
-        std::wstring cmdResult = ProcessService::Execute(logProperty, GIT_LOG_ID, userId, GIT_PROCESS_ID, cmd);
+        std::wstring cmdResult = ProcessService::Execute(logProperty, GIT_LOG_ID, userId, cmd);
         
         std::wsmatch m;
         if (std::regex_search(cmdResult, m, std::wregex(L"[0-9]+.[0-9]+.[0-9]+")))
@@ -48,6 +48,6 @@ namespace vcc
         std::wstring cmd = L"git init";
         if (!workspace.empty())
             cmd += L" " + workspace;
-        ProcessService::Execute(logProperty, GIT_LOG_ID, userId, GIT_PROCESS_ID, cmd);
+        ProcessService::Execute(logProperty, GIT_LOG_ID, userId, cmd);
     }
 }

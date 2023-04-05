@@ -34,7 +34,11 @@ namespace vcc
             THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(e.what()));
         }
         int status = pclose(p);
+        #ifdef _WIN32
+        if (status != 0)
+        #else
         if (WEXITSTATUS(status) != 0)
+        #endif
             THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, result);
         LogService::LogCommandResult(logProperty, id, userId, result);
         return result;
