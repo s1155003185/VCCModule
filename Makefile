@@ -148,7 +148,7 @@ all: debug
 
 # need to seperate gtest process to get o file again
 debug: $(ALL_PROJECT_FILES) $(MAIN)
-	make gtest
+	$(MAKE) gtest
 	@echo Building complete!
 
 $(MAIN): $(ALL_PROJECT_CPP_FILES) $(ALL_PROJECT_O_FILES)
