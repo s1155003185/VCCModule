@@ -1,3 +1,4 @@
+# Versioning Common Codebase Project / Versioning Coding Cooperation Project
 # VCCProject-VCCModuleDLL
 
 
@@ -52,6 +53,9 @@ When update, drop all External/vcc folders then download the latest one.
 -	Remove unittest/External to skip running unit test of VCCModule.
 
 ## Release Log
+
+### 2023-10-15 Project Name
+-	Add long project name
 
 ### 2023-03-05 Process, Git
 -	Process
