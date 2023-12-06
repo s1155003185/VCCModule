@@ -54,6 +54,8 @@ When update, drop all External/vcc folders then download the latest one.
 
 ## Release Log
 
+### 2023-12-06 Change Project and MakeFile to CPP Complex Mode
+
 ### 2023-10-15 Project Name
 -	Add long project name
 
