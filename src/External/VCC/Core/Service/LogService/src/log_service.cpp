@@ -2,13 +2,16 @@
 
 #include <iostream>
 
-#include "datetime_helper.hpp"
+#include "time_helper.hpp"
 #include "file_helper.hpp"
 
 namespace vcc
 {
-	std::wstring LogService::_logMessage(LogProperty &logProperty, LogType logType, std::wstring id, std::wstring userid, std::wstring message)
+	std::wstring LogService::_logMessage(const LogProperty *logProperty, LogType logType, std::wstring id, std::wstring message)
 	{
+		if (logProperty == nullptr)
+			return L"";
+
 		std::wstring logMessage;
 		switch (logType)
 		{
@@ -27,326 +30,74 @@ namespace vcc
 		}
 
 		logMessage += L" " + GetCurrentDatetimeString();
-		if (!id.empty())
+		if (!IsBlank(id))
 			logMessage += L" [" + id + L"]";
-		if (!userid.empty())
-			logMessage += L" [" + userid + L"] ";
+		if (!IsBlank(logProperty->GetUserID()))
+			logMessage += L" [" + logProperty->GetUserID() + L"] ";
 		logMessage += L" " + message;
-		if (logProperty.GetIsConsoleLog())
-			std::wcout << logMessage << endl;
+		if (logProperty->GetIsConsoleLog())
+			std::wcout << logMessage << std::endl;
 
-		if (!logProperty.GetFilePath().empty()) {
-			AppendFileSingleLline(logProperty.GetFilePath(), logMessage, true);
+		if (!IsBlank(logProperty->GetFilePath())) {
+			AppendFileOneLine(logProperty->GetFilePath(), logMessage, true);
 		}
 		return logMessage;
 	}
 
-	std::wstring LogService::LogInfo(std::wstring message)
+	std::wstring LogService::LogInfo(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogInfo(defaultProperty, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 
-	std::wstring LogService::LogInfo(std::wstring id, std::wstring message)
+	std::wstring LogService::LogWarning(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogInfo(defaultProperty, id, message);
+		return LogService::_logMessage(logProperty, LogType::Warning, id, message);
 	}
 
-	std::wstring LogService::LogInfo(std::wstring id, std::wstring userid, std::wstring message)
+	std::wstring LogService::LogError(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogInfo(defaultProperty, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Error, id, message);
 	}
 
-	std::wstring LogService::LogInfo(LogProperty &logProperty, std::wstring message)
+	std::wstring LogService::LogTerminal(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		return LogService::LogInfo(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogInfo(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogInfo(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogInfo(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
-	}
-
-	std::wstring LogService::LogWarning(std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogWarning(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogWarning(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogWarning(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogWarning(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogWarning(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogWarning(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogWarning(logProperty, L"", message);
-	}
-
-	std::wstring LogService::LogWarning(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogWarning(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogWarning(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		return LogService::_logMessage(logProperty, LogType::Warning, id, userid, message);
-	}
-
-	std::wstring LogService::LogError(std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogError(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogError(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogError(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogError(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogError(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogError(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogError(logProperty, L"", message);
-	}
-
-	std::wstring LogService::LogError(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogError(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogError(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		return LogService::_logMessage(logProperty, LogType::Error, id, userid, message);
-	}
-
-	std::wstring LogService::LogCommand(std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogCommand(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogCommand(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogCommand(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogCommand(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogCommand(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogCommand(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogCommand(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogCommand(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogCommand(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogCommand(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		if (!logProperty.GetIsLogCommand())
+		if (logProperty == nullptr || !logProperty->GetIsLogTerminal())
 			return L"";
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 
-	std::wstring LogService::LogCommandResult(std::wstring message)
+	std::wstring LogService::LogTerminalResult(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogCommandResult(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogCommandResult(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogCommandResult(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogCommandResult(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogCommandResult(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogCommandResult(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogCommandResult(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogCommandResult(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogCommandResult(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogCommandResult(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		if (!logProperty.GetIsLogCommandResult())
+		if (logProperty == nullptr || !logProperty->GetIsLogTerminalResult())
 			return L"";
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 
-	std::wstring LogService::LogProcess(std::wstring message)
+	std::wstring LogService::LogProcess(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogProcess(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogProcess(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogProcess(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogProcess(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogProcess(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogProcess(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogProcess(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogProcess(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogProcess(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogProcess(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		if (!logProperty.GetIsLogProcess())
+		if (logProperty == nullptr || !logProperty->GetIsLogProcess())
 			return L"";
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 
-	std::wstring LogService::LogProcessResult(std::wstring message)
+	std::wstring LogService::LogProcessResult(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogProcessResult(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogProcessResult(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogProcessResult(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogProcessResult(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogProcessResult(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogProcessResult(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogProcessResult(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogProcessResult(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogProcessResult(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogProcessResult(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		if (!logProperty.GetIsLogProcessResult())
+		if (logProperty == nullptr || !logProperty->GetIsLogProcessResult())
 			return L"";
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 
-	std::wstring LogService::LogSQL(std::wstring message)
+	std::wstring LogService::LogSQL(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogSQL(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogSQL(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogSQL(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogSQL(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogSQL(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogSQL(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogSQL(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogSQL(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogSQL(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogSQL(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		if (!logProperty.GetIsLogSQL())
+		if (logProperty == nullptr || !logProperty->GetIsLogSQL())
 			return L"";
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 
-	std::wstring LogService::LogSQLResult(std::wstring message)
+	std::wstring LogService::LogSQLResult(const LogProperty *logProperty, std::wstring id, std::wstring message)
 	{
-		LogProperty defaultProperty;
-		return LogService::LogSQLResult(defaultProperty, message);
-	}
-
-	std::wstring LogService::LogSQLResult(std::wstring id, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogSQLResult(defaultProperty, id, message);
-	}
-
-	std::wstring LogService::LogSQLResult(std::wstring id, std::wstring userid, std::wstring message)
-	{
-		LogProperty defaultProperty;
-		return LogService::LogSQLResult(defaultProperty, id, userid, message);
-	}
-
-	std::wstring LogService::LogSQLResult(LogProperty &logProperty, std::wstring message)
-	{
-		return LogService::LogSQLResult(logProperty, L"", L"", message);
-	}
-
-	std::wstring LogService::LogSQLResult(LogProperty &logProperty, std::wstring id, std::wstring message)
-	{
-		return LogService::LogSQLResult(logProperty, id, L"", message);
-	}
-
-	std::wstring LogService::LogSQLResult(LogProperty &logProperty, std::wstring id, std::wstring userid, std::wstring message)
-	{
-		if (!logProperty.GetIsLogSQLResult())
+		if (logProperty == nullptr || !logProperty->GetIsLogSQLResult())
 			return L"";
-		return LogService::_logMessage(logProperty, LogType::Info, id, userid, message);
+		return LogService::_logMessage(logProperty, LogType::Info, id, message);
 	}
 }

@@ -1,15 +1,28 @@
 #pragma once
 
+// TODO: need review
 enum class ExceptionType
 {
-	NO_ERROR = 0,
-    // vccobj - begin
+	NoError = 0,
+	// Coding error
+	NotSupport,
+	NotImplement,
+	// System
+	DllError,
+
 	// Directory
-	DIRECTORY_NOT_FOUND,
-	DIRECTORY_CANNOT_CREATE,
+	DirectoryNotFound,
+	DirectoryCannotCreate,
     // File
-	FILE_NOT_FOUND,
-	FILE_CANNOT_OPEN,
-    // vccobj - end
-    CUSTOM_ERROR = 9999,
+	FileNotFound,
+	FileBlocked,
+	FileAlreadyExist,
+	FileCannotOpen,
+	// parser
+	ParserError,
+
+	SystemError = 50000,
+	// <vcc:exceptionType action:"RESERVE">
+	// </vcc:exceptionType>
+    CustomError = 99999
 };

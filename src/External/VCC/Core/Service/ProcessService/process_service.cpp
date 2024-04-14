@@ -1,5 +1,6 @@
 #include "process_service.hpp"
 
+#include <filesystem>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -23,20 +24,19 @@ namespace vcc
 {
 
         #ifdef _WIN32
-        std::wstring ProcessService::_ExecuteWindow(std::wstring command)
+        std::wstring ProcessService::_ExecuteWindow(const std::wstring &command)
         {
-            return process_service_win(command);
+            return ProcessServiceWin(command);
         }
         #else
-        std::wstring ProcessService::_ExecuteLinux(std::string command)
+        std::wstring ProcessService::_ExecuteLinux(const std::string &command)
         {
             std::wstring result = L"";
             // convert to token
-            vector<char *> tokens;
-            char *token = strtok((char *)command.c_str(), " ");
-            while (token != nullptr) {
-                tokens.push_back(token);
-                token = strtok(nullptr, " ");
+            std::vector<std::string> cmdTokens = ProcessService::ParseCMDLinux(command);
+            std::vector<char *> tokens;
+            for (size_t i = 0; i < cmdTokens.size(); i++) {
+                tokens.push_back((char *)(cmdTokens[i].c_str()));
             }
             tokens.push_back(nullptr);
 
@@ -91,12 +91,12 @@ namespace vcc
             }
             wait(&status);
             if (status != 0)
-                throw runtime_error(error);
+                throw std::runtime_error(error);
             return result;
         }
         #endif
 
-        std::wstring ProcessService::_Execute(std::wstring command)
+        std::wstring ProcessService::_Execute(const std::wstring &command)
         {
             #ifdef _WIN32
             return ProcessService::_ExecuteWindow(command);
@@ -105,23 +105,88 @@ namespace vcc
             #endif
         }
 
-        std::wstring ProcessService::Execute(std::wstring command)
+        std::vector<std::string> ProcessService::ParseCMDLinux(const std::string &cmd)
         {
-            LogProperty defaultProperty;
-            return ProcessService::Execute(defaultProperty, L"PROCESS", L"", command);
+            // need to remove double quote and escape "\"
+            std::vector<std::string> results;
+            std::string token = "";
+            char strStartToken = '\0';
+            bool isEscape = false;
+            for (char c : cmd) {
+                if (isEscape) {
+                    token += c;
+                    isEscape = false;
+                    continue;
+                }
+                if (strStartToken == '\0') {
+                    if (c == L' ') {
+                        if (!token.empty()) {
+                            results.push_back(token);
+                        }
+                        token = "";
+                    } else if (c == '"' || c == '\'') {
+                        strStartToken = c;
+                    } else {
+                        token += c;
+                    }
+                } else {
+                    if (c == '\\') {
+                        isEscape = true;
+                    } else if (c == strStartToken) {
+                        strStartToken = '\0';
+                    } else {
+                        token += c;
+                    }
+                }
+            }
+            if (!token.empty())
+                results.push_back(token);
+            return results;
         }
 
-        std::wstring ProcessService::Execute(LogProperty &logProperty, std::wstring id, std::wstring userId, std::wstring command)
+        std::wstring ProcessService::Execute(const LogProperty *logProperty, const std::wstring &id, const std::wstring &command)
         {
-            LogService::LogProcess(logProperty, id, userId, command);
+            LogService::LogProcess(logProperty, id, command);
 
             std::wstring result = L"";
             try {
                 result = ProcessService::_Execute(command);
-            } catch (exception &e) {
-                THROW_EXCEPTION(ExceptionType::CUSTOM_ERROR, str2wstr(std::string(e.what())));
+            } catch (std::exception &e) {
+                THROW_EXCEPTION(e);
             }
-            LogService::LogProcessResult(logProperty, id, userId, result);
+            LogService::LogProcessResult(logProperty, id, result);
+            Trim(result);
+            return result;
+        }
+
+        std::wstring ProcessService::Execute(const LogProperty *logProperty, const std::wstring &id, const std::wstring &workspace, const std::wstring &command)
+        {
+            std::wstring currentDirectory = L"";
+            std::wstring result = L"";
+            try {
+                currentDirectory = std::filesystem::current_path().wstring();
+                if (!IsBlank(workspace))
+                    std::filesystem::current_path(workspace);
+            } catch (std::exception &e) {
+                if (!IsBlank(workspace))
+                    std::filesystem::current_path(currentDirectory);
+                THROW_EXCEPTION(e);
+                return result;
+            }
+            try {
+                result = ProcessService::Execute(logProperty, id, command);
+            } catch (std::exception &e) {
+                if (!IsBlank(workspace))
+                    std::filesystem::current_path(currentDirectory);
+                THROW_EXCEPTION(e);
+            }
+            try {
+                if (!IsBlank(workspace))
+                    std::filesystem::current_path(currentDirectory);
+            } catch (std::exception &e) {
+                THROW_EXCEPTION(e);
+                return result;
+            }            
             return result;
         }
 }

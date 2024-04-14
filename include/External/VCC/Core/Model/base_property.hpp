@@ -1,13 +1,14 @@
 #pragma once
 #include "i_property.hpp"
 
+#include "base_object.hpp"
 #include "class_macro.hpp"
 
 namespace vcc
 {
-    class BaseProperty : public IProperty
+    template <typename Derived>
+    class BaseProperty : public IProperty, public BaseObject<Derived>
     {
-        THREAD_SAFE
         protected:
             BaseProperty() {}
             ~BaseProperty() {}

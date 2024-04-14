@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 namespace vcc
@@ -10,6 +11,6 @@ namespace vcc
             ~IObject() {}
 
         public:
-            virtual std::wstring GetKey() = 0;
+            virtual std::shared_ptr<IObject> Clone() const = 0;
     };
 }
