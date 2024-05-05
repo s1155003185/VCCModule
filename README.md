@@ -84,9 +84,12 @@ X(Twitter) @VCCProject
 
 ## Release Log
 
-### 2024-05-05 First Release: v0.0.1
+2024-05-05 v0.0.2
+- Change GitService SwitchTag to Switch
 
-### 2023-02-16 Initialize
+2024-05-05 First Release: v0.0.1
+
+2023-02-16 Initialize
 -	Initializtion
 -	LogService
 -	ActionManager

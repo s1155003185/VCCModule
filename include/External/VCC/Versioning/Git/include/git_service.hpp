@@ -22,6 +22,17 @@ namespace vcc
             GitStatusSearchCriteria() : BaseObject() {}
             virtual ~GitStatusSearchCriteria() {}
     };
+    
+    class GitCloneOption : public BaseObject<GitCloneOption>
+    {
+        GETSET(std::wstring, Branch, L"");
+        GETSET(int64_t, Depth, -1);
+        GETSET(bool, IsQuiet, false);
+        
+        public:
+            GitCloneOption() : BaseObject() {}
+            virtual ~GitCloneOption() {}
+    };
 
     enum class GitFileStatus
     {
@@ -368,7 +379,7 @@ namespace vcc
 
         // Initialization
         static void Initialize(const LogProperty *logProperty, const std::wstring &workspace);
-        static void Clone(const LogProperty *logProperty, const std::wstring &workspace, const std::wstring &url, const std::wstring &branch = L"", const int64_t &depth = -1);
+        static void Clone(const LogProperty *logProperty, const std::wstring &workspace, const std::wstring &url, const GitCloneOption *option = nullptr);
 
         /*-----------------------------------*
          * ----------- Remote     -----------*
@@ -414,10 +425,10 @@ namespace vcc
         static GitTagCurrentTag GetCurrentTag(const LogProperty *logProperty, const std::wstring &workspace);
         static void CreateTag(const LogProperty *logProperty, const std::wstring &workspace, const std::wstring &tagName, const GitTagCreateTagOption *option = nullptr);
         // Window behavior and Linux Behavior different, Window throw exception (tag will detach branch) while Linux will not
-        // Can use GitService::SwitchTagReverse to switch back
-        static void SwitchTag(const LogProperty *logProperty, const std::wstring &workspace, const std::wstring &tagName, bool isForce = false);
-        // Undo SwitchTag
-        static void SwitchTagReverse(const LogProperty *logProperty, const std::wstring &workspace);
+        // Can use GitService::SwitchReverse to switch back
+        static void Switch(const LogProperty *logProperty, const std::wstring &workspace, const std::wstring &tagName, bool isForce = false);
+        // Undo Switch
+        static void SwitchReverse(const LogProperty *logProperty, const std::wstring &workspace);
         static void DeleteTag(const LogProperty *logProperty, const std::wstring &workspace, const std::wstring &tagName);
 
         /*-----------------------------------*
