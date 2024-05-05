@@ -1,4 +1,4 @@
-# Versioning Common Codebase Module (VCCModuleDLL)
+# Versioning Common Codebase Module (VCCModule)
 ### Versioning Common Codebase Project
 It is member of Versioning Common Codebase Project.
 All platform (Window, Linux, MacOS, Andriod, IOS).
@@ -20,15 +20,12 @@ Please use following project to create and update project.
 VCCProjectGenerator (https://github.com/s1155003185/VCCProjectGenerator)
 VCCProjectGeneratorVSCodeExtension (https://github.com/s1155003185/VCCProjectGeneratorVSCodeExtension)
 
-#### Note
+## Note
 As c++ are upgrading since c++17 and avoid too many versions. VCCModule default version is c++29 (or the version that c++ upgrade completed). VCCModule will force update if g++ support new version.
 
-#### Pending: Full Review
-Review Exception
-Review Class
-Review Enum
-
-#### Status:
+****
+## Feature
+### Status:
 -	Active: Keep changing. Not recommend to use.
 -	Stable: Workable.
 -	Inactive: Will not update in the future.
@@ -54,12 +51,33 @@ Review Enum
 -	LicenseService (Pending)
 -	PaymentService (Pending)
 
-### Update
-When update, drop all External/vcc folders then download the latest one.
+****
+## Update
+When update, drop all External/VCC folders then replace by the latest one.
 
-### Optional
+## Optional
 -	Filter out *.o: File > Preferences > Setting => Files: Exclude => Add **/**.o
 -	Remove unittest/External to skip running unit test of VCCModule.
+
+## Build C++ project
+Follow the instruction listed in Makefile
+
+when compile enter following command in terminal:
+To build debug
+```
+make debug -j10
+```
+
+To build release
+```
+make release -j10
+```
+
+Debug program is built in bin/Debug
+Release program is built in bin/Release
+
+## Execute C++ project in VScode
+F5
 
 ## Release Log
 
