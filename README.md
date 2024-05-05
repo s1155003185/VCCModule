@@ -1,15 +1,24 @@
-# Versioning Common Codebase Project / Versioning Coding Cooperation Project
-# VCCProject-VCCModuleDLL
+# Versioning Common Codebase Module (VCCModuleDLL)
+### Versioning Common Codebase Project
+It is member of Versioning Common Codebase Project.
+All platform (Window, Linux, MacOS, Andriod, IOS).
 
+Note: Still in initialize version, will have full review when official release
+Note: Don't use XMLReader, it will be combined with Builder and rename to XMLBuilder later
 
-## Assumption
-All platform (Window, Linux, MacOS).
-Already install VSCode, debugger, g++, googletest.
+## Introduction
+When starting a new project, it is time consuming to create basic structure. In fact, all projects have similar structure and lots of similar functions. And rewrite codebase is time consuming. Versioning Common Codebase Project is raised to extract common factor to enhance development efficience.
+
+## Pre-Requirement
+1. git
+2. g++
+3. make
+4. gtest
 
 ## Usage
-To config, follow command in Makefile.
-Change dll name in dynamic_library_test.cpp.
-Remove first layer README and LICENCE. But should not remove LICENCE under External folder. May use other copyleft resources.
+Please use following project to create and update project.
+VCCProjectGenerator (https://github.com/s1155003185/VCCProjectGenerator)
+VCCProjectGeneratorVSCodeExtension (https://github.com/s1155003185/VCCProjectGeneratorVSCodeExtension)
 
 #### Note
 As c++ are upgrading since c++17 and avoid too many versions. VCCModule default version is c++29 (or the version that c++ upgrade completed). VCCModule will force update if g++ support new version.
@@ -26,16 +35,16 @@ Review Enum
 -	Pending: Coming soon.
 
 ### Core:
--	Helper (Stable)
--	Thread Safe Class (Stable)
+-	Action Manager (Pending)
 -	Exception (Stable)
+-	Helper (Stable, Keep update)
 -	Log Service (Stable)
--   Command Service (Stable)
 -   Process Service (Stable)
--	Action Manager (Stable)
 -	Property Accessor (Pending)
+-   Terminal Service (Stable)
+-   XML (Pending)
 ### Common:
--   Git (Actives)
+-   Git (Actives, basic function only)
 ### Module:
 -	TextEditor (Pending)
 -	Document (Pending)
@@ -54,25 +63,9 @@ When update, drop all External/vcc folders then download the latest one.
 
 ## Release Log
 
-### 2023-12-06 Change Project and MakeFile to CPP Complex Mode
+### 2024-05-05 First Release: v0.0.1
 
-### 2023-10-15 Project Name
--	Add long project name
-
-### 2023-03-05 Process, Git
--	Process
--   Git init
-
-### 2023-02-25 Command
--	Command
-
-### 2023-02-24 Class
--	Thread Safe Class
-
-### 2023-02-19 Exception
--	Exception
-
-### 2023-02-16 First Release
+### 2023-02-16 Initialize
 -	Initializtion
 -	LogService
 -	ActionManager
