@@ -79,6 +79,9 @@ Release program is built in bin/Release
 ## Execute C++ project in VScode
 F5
 
+## Contact
+X(Twitter) @VCCProject
+
 ## Release Log
 
 ### 2024-05-05 First Release: v0.0.1
