@@ -83,6 +83,8 @@ F5
 X(Twitter) @VCCProject
 
 ## Release Log
+2024-05-05 v0.0.3
+- Update Makefile to fix unittest name to "unittest"
 
 2024-05-05 v0.0.2
 - Change GitService SwitchTag to Switch
