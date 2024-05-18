@@ -26,26 +26,10 @@ namespace vcc
         return result;
     }
 
-    std::wstring JsonBuilder::GetErrorMessage(const std::wstring &str, const size_t &pos, const std::wstring &msg) const
-    {
-        size_t row = 0, column = 0;
-        GetCharacterRowAndColumn(str, pos, row, column);
-        
-        size_t lengthOfPos = std::min(pos, _NumberOfCharactersBeforePosForErrorMessage);
-        size_t lengthOfSub = std::min(str.length() - pos, _NumberOfCharactersAfterPosForErrorMessage);
-
-        std::wstring preString = str.substr(pos - lengthOfPos, lengthOfPos);
-        std::wstring subString = str.substr(pos + 1, lengthOfSub);
-        return L"Error at position " + std::to_wstring(pos + 1) 
-            + L", row " + std::to_wstring(row) 
-            + L", column " + std::to_wstring(column) + L": " + preString + L"<<" + std::wstring(1, str[pos]) + L">>" + subString + L"\r\n "
-            + L" Error message: " + msg;
-    }
-
     std::wstring JsonBuilder::Serialize(const IDocument *doc) const
     {
         std::wstring result = L"";
-        TRY_CATCH(
+        TRY
             std::wstring currentNewLineCharacter = _IsBeautify ? _NewLineCharacter : L"";
             std::wstring currentNameColonSpace = _IsBeautify ? _NameColonSpace : L"";
             std::wstring currentColonValueSpace = _IsBeautify ? _ColonValueSpace : L"";
@@ -97,7 +81,7 @@ namespace vcc
                 assert(false);
                 break;
             }
-        )
+        CATCH
         return result;
     }
 
@@ -172,8 +156,8 @@ namespace vcc
 
     void JsonBuilder::Deserialize(const std::wstring &str, size_t &pos, std::shared_ptr<IDocument> doc) const
     {
-        TRY_CATCH(
-            std::shared_ptr<Json> jsonObj = dynamic_pointer_cast<Json>(doc);
+        TRY
+            std::shared_ptr<Json> jsonObj = std::dynamic_pointer_cast<Json>(doc);
             assert(jsonObj != nullptr);
             GetNextCharacterPos(str, pos, true);
             if (str[pos] != L'{')
@@ -205,14 +189,14 @@ namespace vcc
                     break;
                 GetNextCharacterPos(str, pos, false);
             }
-        )
+        CATCH
     }
 
     void JsonBuilder::Deserialize(const std::wstring &str, std::shared_ptr<IDocument> doc) const
     {
-        TRY_CATCH(
+        TRY
             size_t pos = 0;
             this->Deserialize(str, pos, doc);
-        )
+        CATCH
     }
 }
