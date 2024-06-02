@@ -1,5 +1,6 @@
 #pragma once
-#include "base_key.hpp"
+
+#include "base_type_union.hpp"
 
 namespace vcc
 {
@@ -7,6 +8,6 @@ namespace vcc
     {
         protected:
             PropertyAccessorKey() {}
-            ~PropertyAccessorKey() {}
+            virtual ~PropertyAccessorKey() {}
     };
 }

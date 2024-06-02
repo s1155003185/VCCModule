@@ -11,17 +11,17 @@ using namespace vcc;
 /* ---------------------------------------------------------------------------------------------------- */
 /*                                      Has Prefix                                                      */
 /* ---------------------------------------------------------------------------------------------------- */
-TEST(StringHelperTest, HasPrefixTrimSpace_NoSpace)
+TEST(StringHelperTest, IsStartWithTrimSpace_NoSpace)
 {
     std::wstring prefix = L"//<vcc:abc";
-    EXPECT_TRUE(HasPrefixTrimSpace(prefix, prefix));
+    EXPECT_TRUE(IsStartWithTrimSpace(prefix, prefix));
 }
 
-TEST(StringHelperTest, HasPrefixTrimSpace_Space)
+TEST(StringHelperTest, IsStartWithTrimSpace_Space)
 {
     std::wstring prefix = L"//<vcc:abc";
     std::wstring text = L"// <vcc:abc";
-    EXPECT_TRUE(HasPrefixTrimSpace(text, prefix));
+    EXPECT_TRUE(IsStartWithTrimSpace(text, prefix));
 }
 /* ---------------------------------------------------------------------------------------------------- */
 /*                                      Split String                                                    */
@@ -244,18 +244,18 @@ TEST(StringHelperTest, GetNextQuotedString_Full)
     pos = 1;
     EXPECT_EQ(GetNextQuotedString(fullStr, pos, { L":", L"," }, {L"\"", L"{"}, {L"\"", L"}"}, {L"\\", L""}), L"\"name\"");
     EXPECT_EQ(pos, (size_t)6);
-    GetNextCharacterPos(fullStr, pos);
+    GetNextCharPos(fullStr, pos);
     EXPECT_EQ(pos, (size_t)7);
     EXPECT_EQ(GetNextQuotedString(fullStr, pos, { L":", L"," }, {L"\"", L"{"}, {L"\"", L"}"}, {L"\\", L""}), L"");
     EXPECT_EQ(pos, (size_t)7);
     pos = 8;
     EXPECT_EQ(GetNextQuotedString(fullStr, pos, { L":", L"," }, {L"\"", L"{"}, {L"\"", L"}"}, {L"\\", L""}), L"\"John\"");
     EXPECT_EQ(pos, (size_t)13);
-    GetNextCharacterPos(fullStr, pos);
+    GetNextCharPos(fullStr, pos);
     EXPECT_EQ(pos, (size_t)14);
     EXPECT_EQ(GetNextQuotedString(fullStr, pos, { L":", L"," }, {L"\"", L"{"}, {L"\"", L"}"}, {L"\\", L""}), L"}");
     EXPECT_EQ(pos, (size_t)14);
-    GetNextCharacterPos(fullStr, pos);
+    GetNextCharPos(fullStr, pos);
     EXPECT_EQ(pos, (size_t)15);
     EXPECT_EQ(GetNextQuotedString(fullStr, pos, { L":", L"," }, {L"\"", L"{"}, {L"\"", L"}"}, {L"\\", L""}), L"");
     EXPECT_EQ(pos, (size_t)15);    

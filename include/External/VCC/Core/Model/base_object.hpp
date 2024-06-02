@@ -9,12 +9,12 @@ namespace vcc
     template <typename Derived>
     class BaseObject : public IObject
     {
-        GET(ObjectType, Type, ObjectType::NA)
+        GETSET(ObjectType, Type, ObjectType::NA)
 
         protected:
             BaseObject() {}
             BaseObject(ObjectType type) : BaseObject() { this->_Type = type; }
-            ~BaseObject() {}
+            virtual ~BaseObject() {}
 
         public:
             virtual std::shared_ptr<IObject> Clone() const override
