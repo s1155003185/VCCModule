@@ -13,14 +13,14 @@ using namespace vcc;
 /* ---------------------------------------------------------------------------------------------------- */
 TEST(StringHelperTest, IsStartWithTrimSpace_NoSpace)
 {
-    std::wstring prefix = L"//<vcc:abc";
+    std::wstring prefix = L"a<vcc:abc";
     EXPECT_TRUE(IsStartWithTrimSpace(prefix, prefix));
 }
 
 TEST(StringHelperTest, IsStartWithTrimSpace_Space)
 {
-    std::wstring prefix = L"//<vcc:abc";
-    std::wstring text = L"// <vcc:abc";
+    std::wstring prefix = L"a<vcc:abc";
+    std::wstring text = L"a <vcc:abc";
     EXPECT_TRUE(IsStartWithTrimSpace(text, prefix));
 }
 /* ---------------------------------------------------------------------------------------------------- */
@@ -194,6 +194,15 @@ TEST(StringHelperTest, Find_wstring)
     EXPECT_EQ(Find(L"aAb", L"Ab", 1, false), 1UL);
     EXPECT_EQ(Find(L"aAbc", L"Ab", 1, false), 1UL);
     EXPECT_EQ(Find(L"aAbcAb", L"Ab", 1, false), 1UL);
+}
+
+TEST(StringHelperTest, GetTailingSubstring)
+{
+    EXPECT_EQ(GetTailingSubstring(L"", 2), L"");
+    EXPECT_EQ(GetTailingSubstring(L"1", 2), L"1");
+    EXPECT_EQ(GetTailingSubstring(L"12", 2), L"12");
+    EXPECT_EQ(GetTailingSubstring(L"123", 2), L"23");
+    EXPECT_EQ(GetTailingSubstring(L"1234", 2), L"34");
 }
 
 TEST(StringHelperTest, GetNextString_Basic)

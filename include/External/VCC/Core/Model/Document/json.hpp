@@ -49,6 +49,7 @@ namespace vcc
             void SetBool(const std::wstring &key, bool value) const;
             void AddBool(const std::wstring &key, bool value) const;
 
+            float GetFloat(const std::wstring &key) const;
             double GetDouble(const std::wstring &key) const;
             size_t GetDecimalPlaces(const std::wstring &key) const;
             void SetDouble(const std::wstring &key, double value, size_t decimalPlaces) const;
@@ -56,9 +57,11 @@ namespace vcc
 
             int GetInt32(const std::wstring &key) const;
             int64_t GetInt64(const std::wstring &key) const;
-            void SetInt(const std::wstring &key, int value) const;
-            void AddInt(const std::wstring &key, int value) const;
+            void SetInt(const std::wstring &key, int64_t value) const;
+            void AddInt(const std::wstring &key, int64_t value) const;
 
+            char GetChar(const std::wstring &key) const;
+            wchar_t GetWchar(const std::wstring &key) const;
             std::wstring GetString(const std::wstring &key) const;
             void SetString(const std::wstring &key, const std::wstring &value) const;
             void AddString(const std::wstring &key, const std::wstring &value) const;
@@ -73,11 +76,24 @@ namespace vcc
             
             // Array
             void AddArrayNull() const;
+
+            bool GetArrayElementBool() const;
             void AddArrayBool(bool value) const;
+
+            double GetArrayElementDouble() const;
             void AddArrayDouble(double value, size_t decimalPlaces) const;
-            void AddArrayInt(int value) const;
+            
+            int64_t GetArrayElementInt64() const;
+            void AddArrayInt(int64_t value) const;
+
+            char GetArrayElementChar() const;
+            wchar_t GetArrayElementWchar() const;
+            std::wstring GetArrayElementString() const;
             void AddArrayString(const std::wstring &value) const;
+
+            std::shared_ptr<Json> GetArrayElementObject() const;
             void AddArrayObject(std::shared_ptr<Json> object) const;
+            
             void AddArrayArray(std::shared_ptr<Json> array) const;
     };
 }

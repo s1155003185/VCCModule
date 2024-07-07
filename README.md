@@ -5,8 +5,10 @@ Maintain those standard already stable long time ago. No reason to implement twi
 
 Note: Still in initialize version, will have full review when official release
 
-Note: Stage 1 Basic Structure complete. 
-Next Stage: Start VCC Project Manager (Multi Project Handling), including Java Interface, Thread, Form, Action, Git.
+What news: Generate Json Object by Generation Mode (May have bug and only use property name as key)
+What next: Attribute of Generate Json Object by Generation Mode, Rewrite Generator as self writing
+
+Current Stage Objective: Start VCC Project Manager (Multi Project Handling), including Java Interface, Thread, Form, Action, Git.
 
 ## Features
 - Easy update project to model version instead of rewrite codebase. Just Update Project Genertor to newest version, execute Update and Generation.
@@ -102,7 +104,7 @@ Release program is built in bin/Release
 -	Helper (Stable, Keep update)
 -	Log Service (Stable)
 -   Process Service (Stable)
--	Property Accessor (Pending)
+-	Property Accessor (Stable but need adjustment for map, and try to support set)
 -   Terminal Service (Stable)
 -   XML (Read only, Other are still pending)
 ### Common:
@@ -473,8 +475,25 @@ Example
     };
     ```
 
-#### Field Defintion
-{Enum} // {ClassMacro} [@@AccessMode]
+#### Documentation
+// {Class Attribute}
+enum class EnumClassName {
+    EnumA, // {Field Attribute}
+    EnumB, // {Field Attribute}
+    EnumC, // {Field Attribute}
+};
+
+#### Class Attribute
+// [@@Json]
+
+[]: Optional
+@@: Key for attributes. Need to state for attribute
+
+[@@Json]
+    Generate Class as Json Object. Class will have attribute ToJson, SerializeJson and DeserializeJson
+
+#### Field Attribute
+Enum // {ClassMacro} [@@AccessMode]
 
 {...}: Compulsory
 []: Optional
@@ -497,6 +516,61 @@ Example
             Allow Write Only via Property Accessor
         @@NoAccess
             Cannot Access via Property Accessor
+
+### Export to Java
+Assume that using Maven Java Project. The library will be compiled to resources folder.
+For MacOS, only test with M Chips.
+
+Please put following code to Pom. Only test for version >= 5.14.0.
+```
+    <dependencies>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.14.0</version>
+        </dependency>
+    </dependencies>
+```
+
+Note: NetBeans cannot find net.java.dev.jna, It can only find old version com.sun.jna. After verison 3.0.0, con.sun.jna has been renamed as net.java.dev.jna but the import files still called com.sun.jna.
+For the com.sun.jna version, it does not support Mac M Chips and throw linkage error.
+
+Note: When using jna, when we put "vpg" as dll name, it will auto searh with the libaray with name libvpg.dylib under src/main/resources
+Please having lib name with libxxx.dylib format
+
+```
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+
+interface DllFunctions extends Library {
+    DllFunctions INSTANCE = (DllFunctions) Native.load("vpg", DllFunctions.class);
+
+    int GetVersion();
+}
+public class Test {
+
+    public static void main(String[] args) {
+        System.out.println(DllFunctions.INSTANCE.GetVersion());
+    }
+}
+```
+
+#### Java Type Mapping
+According to JNA (Java Native Access), here is the map of types between c++ and Java. Better to use below type only. If not using below type, generator will use static cast.
+| C++ Type | Java Type |
+| --- | --- |
+| char | byte |
+| short | short |
+| wchart_t | char |
+| int | int |
+| bool | boolean |
+| long | NativeLong |
+| long long | long |
+| float | float |
+| double | double |
+| char* | String |
+| void* | pointer |
+
 
 ****
 ## Versioning Common Codebase Project Generator VSCode Extension
@@ -580,6 +654,12 @@ X(Twitter) @VCCProject
 
 ****
 ## Release Log
+
+### [v1.0.0] - 2024-07-07: Java Bridge: Prepare for generate Java Bridge
+- Makefile MacOS extension changed from .so to .dylib
+- vcc.json rename ModelDirectory to ObjectDirectory, ObjectDirectory to ObjectDirectoryHpp, added ObjectDirectoryCpp
+- Object Factory, Property Accessor Factory
+- Generate Class Object with Json Serialize and Deserialize
 
 ### [v0.0.5] - 2024-06-02: Basic Strucute: Property Accessor and Thread safe
 - Generate Mode supports generate Property Accessor ReadWrite, ReadOnly, WriteOnly, NoAccess
