@@ -1,5 +1,8 @@
+// <vcc:vccproj gen="DEMAND"/>
 #ifndef DLL_FUNCTIONS_H
 #define DLL_FUNCTIONS_H
+
+#include <string>
 
 #ifdef _WIN32
 #define DLLEXPORT __declspec (dllexport) 
@@ -7,15 +10,16 @@
 #define DLLEXPORT extern 
 #endif
 
-#ifdef __cplusplus
+// <vcc:dllInterfaceHeader gen="FORCE">
+// </vcc:dllInterfaceHeader>
+
 extern "C"
 {
-#endif
 
 DLLEXPORT int GetVersion();
 
-#ifdef __cplusplus
+// <vcc:dllInterface gen="FORCE">
+// </vcc:dllInterface>
 }
-#endif
 
 #endif
