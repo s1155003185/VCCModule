@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-### [v0.1.3]
+### [v0.1.4] - 2024-08-25: Java Bridge: Generation - Java Bridege for Enum
+- Generate Java Enum according to C++ Enum Class under Type Workspace.
+
+### [v0.1.3] - 2024-07-28: Java Bridge: Generation - Dll Interface for Property Accessor
 - Remove support of std::string, all change to use std::wstring
 - Generate Dll Interface for Property Accessor
 - vcc.json remove WorkspaceDestination, change WorkspaceSourceGitUrl to TemplateGitUrl, WorkspaceSource to TemplateWorkspace
