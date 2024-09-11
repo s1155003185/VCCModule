@@ -21,11 +21,12 @@ enum class ExceptionType
 	// parser
 	ParserError,
 	// key
+	KeyInvalid,
 	KeyNotFound,
 	KeyDuplicated,
 
 	SystemError = 50000,
-	// <vcc:exceptionType action:"RESERVE">
+	// <vcc:exceptionType action="RESERVE">
 	// </vcc:exceptionType>
     CustomError = 99999
 };

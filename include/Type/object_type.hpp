@@ -6,4 +6,4 @@ enum class ObjectType
     // vccobj - begin
 
     // vccobj - end
-};
+};

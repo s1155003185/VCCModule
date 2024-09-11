@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <set>
 #include <string>
 
-#include "i_type_union.hpp"
 #include "property_accessor_macro.hpp"
 
 namespace vcc
