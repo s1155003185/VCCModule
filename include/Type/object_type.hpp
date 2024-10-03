@@ -1,9 +1,11 @@
+// <vcc:vccproj sync="FULL" gen="FULL"/>
 #pragma once
 
 enum class ObjectType
 {
-    NA = 0
-    // vccobj - begin
-
-    // vccobj - end
-};
+    NA,
+    GenerationOption,
+    GenerationOptionExport
+    // <vcc:custom sync="SKIP" gen="SKIP">
+    // </vcc:custom>
+};
