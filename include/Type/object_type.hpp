@@ -3,9 +3,7 @@
 
 enum class ObjectType
 {
-    NA,
-    GenerationOption,
-    GenerationOptionExport
+    NA
     // <vcc:custom sync="SKIP" gen="SKIP">
     // </vcc:custom>
 };
