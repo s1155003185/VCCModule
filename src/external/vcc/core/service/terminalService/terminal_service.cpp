@@ -4,23 +4,23 @@
 
 #include "exception_macro.hpp"
 #include "exception_type.hpp"
-#include "log_property.hpp"
+#include "log_config.hpp"
 #include "log_service.hpp"
 #include "string_helper.hpp"
 
 namespace vcc
 {
-    std::wstring TerminalService::Execute(const LogProperty *logProperty, std::wstring id, std::wstring cmd)
+    std::wstring TerminalService::Execute(const LogConfig *logConfig, std::wstring id, std::wstring cmd)
     {
         TRY
-            return Execute(logProperty, id, L"", cmd);
+            return Execute(logConfig, id, L"", cmd);
         CATCH
         return L"";
     }
 
-    std::wstring TerminalService::Execute(const LogProperty *logProperty, const std::wstring &id, const std::wstring &workspace, const std::wstring &cmd)
+    std::wstring TerminalService::Execute(const LogConfig *logConfig, const std::wstring &id, const std::wstring &workspace, const std::wstring &cmd)
     {
-        LogService::LogTerminal(logProperty, id, cmd);
+        LogService::LogTerminal(logConfig, id, cmd);
 
         std::wstring currentDirectory = L"";
         std::wstring result = L"";
@@ -71,7 +71,7 @@ namespace vcc
             return result;
         }
 
-        LogService::LogTerminalResult(logProperty, id, result);
+        LogService::LogTerminalResult(logConfig, id, result);
 
         Trim(result);
         return result;

@@ -7,16 +7,16 @@ Current Stage Objective: Start VCC Project Manager (Multi Project Handling), inc
 
 Note: Still in initialize version, will have full review when official release
 
-Note: Fixed Update Function not work because of
-using // <vcc:exceptionType action:"RESERVE"> in exception_type.hpp
-Please change to 
-// <vcc:exceptionType action="RESERVE">
+Note: For Generator, if version not match, it will drop the template in Document/VCC/VCCModule and clone new one.
+    But in Window version, Drop Create Method not work as Git still holds the folder a few while after executing Git Command.
+    If find that generator have generated wrong file, it may because of outdated template. Please remove the template and try again.
+    For example, if folder name has been changed from Uppercase to Lowercase in Git Response, Git may not be able to update because git is not case sensitive.
 
 Please go to following session to see how to create VCC Project to generate c++ dll with Java Interface
 - Tutorial for Create VCC DLL Project to generate dll with Java Interface
 
 ## What's new
-Changed VCCModule Foler to Camel Case to fit java naming style
+Generate Child Class (allow inherit)
 
 ## What's next
 Form, Action
@@ -152,6 +152,10 @@ Suitable for long term project
 - OAuth
 
 ## Known Issue
+- For Generator, if version not match, it will drop the template in Document/VCC/VCCModule and clone new one.
+    But in Window version, Drop Create Method not work as Git still holds the folder a few while after executing Git Command.
+    If find that generator have generated wrong file, it may because of outdated template. Please remove the template and try again.
+    For example, if folder name has been changed from Uppercase to Lowercase in Git Response, Git may not be able to update because git is not case sensitive.
 - Compile unit test to slow because of linkage. No solution.
 - Regex is too slow
 
@@ -671,7 +675,7 @@ Note:
     e.g. VPGPersionProperty
 
 #### Class Attribute
-// [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }]
+// [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Inherit { "Class": "ClassName" }]
 
 []: Optional
 @@: Key for attributes. Need to state for attribute
@@ -697,8 +701,14 @@ Note:
         Value.DecimalPlaces
             value is number. Declare for decimal places for double and float. If not declare, Json number will be trim tailing 0s.
 
+[@@Inherit { "Class": "ClassName" }]
+    Generate Class that inherit ClassName
+    Attribute:
+        Class
+            Value is Parent Class,
+
 #### Field Attribute
-Enum // {ClassMacro} [@@AccessMode]
+Enum // {ClassMacro} [@@AccessMode] [@@Inherit]
 
 {...}: Compulsory
 []: Optional
@@ -721,6 +731,9 @@ Enum // {ClassMacro} [@@AccessMode]
             Allow Write Only via Property Accessor
         @@NoAccess
             Cannot Access via Property Accessor
+
+[@@Inherit]
+    If stated, generate will not generate Getter and Setter.
 
 #### Example
     There is TypeWorkspace in vcc.json
@@ -840,6 +853,48 @@ According to JNA (Java Native Access), here is the map of types between c++ and 
 | double | double |
 | char* | String |
 | void* | pointer |
+
+## Java UI
+Here are some notes for Java UI.
+
+Please ensure the program have following lines in main.
+
+Set UI style be nature current platform style.
+```
+try {
+    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+} 
+catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+    // handle exception
+}
+```
+
+Set MacOS menu bar be screen menu bar.
+```
+System.setProperty("apple.laf.useScreenMenuBar", "true");
+```
+
+Sample
+```
+/**
+* @param args the command line arguments
+*/
+public static void main(String args[]) {
+    try {
+        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+    } 
+    catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }
+    // Set the property to use the screen menu bar on macOS
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+    
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(() -> {
+        new Main().setVisible(true);
+    });
+}
+```
 
 
 ****
@@ -978,6 +1033,14 @@ X(Twitter) @VCCProject
 
 ****
 ## Release Log
+
+### [v0.2.3] - 2024-10-20: Form - Generate Inherit Class
+- Initialize Application
+- Generate Inherit Class
+- Rename LogProperty to LogConfig as class suffix and Property and file suffix _property.hpp are reserved
+- Merge IProperty and BaseProperty to IObject and BaseObject. Remove i_property.hpp and base_property.hpp
+- Support Generate Form and inerted Class from Type Workspace in vcc.json
+- Fix Win Version Generator not work
 
 ### [v0.2.2] - 2024-10-12: Form - Urgent Fix
 - Fix Generator not work

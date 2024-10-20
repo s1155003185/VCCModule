@@ -3,18 +3,18 @@
 #include <assert.h>
 #include <string>
 
-#include "base_property.hpp"
+#include "base_object.hpp"
 #include "class_macro.hpp"
 
 namespace vcc
 {
-    enum class LogPropertyType
+    enum class LogConfigInitialType
     {
         None,
         All
     };
 
-    class LogProperty : public BaseProperty<LogProperty>
+    class LogConfig : public BaseObject<LogConfig>
     {
         // General
         GETSET(std::wstring, UserID, L"");
@@ -35,16 +35,16 @@ namespace vcc
         GETSET(bool, IsLogSQL, false);
         GETSET(bool, IsLogSQLResult, false);
     public:
-        LogProperty() {}
-        LogProperty(LogPropertyType logPropertyType, std::wstring filePath = L"") {
-            Init(logPropertyType, filePath);
+        LogConfig() {}
+        LogConfig(const LogConfigInitialType &logConfigType, const std::wstring &filePath = L"") {
+            Init(logConfigType, filePath);
         }
-        virtual ~LogProperty() {}
+        virtual ~LogConfig() {}
 
-        void Init(LogPropertyType logPropertyType, std::wstring filePath = L"") const {
-            switch (logPropertyType)
+        void Init(const LogConfigInitialType &logConfigType, const std::wstring &filePath = L"") const {
+            switch (logConfigType)
             {
-            case LogPropertyType::None:
+            case LogConfigInitialType::None:
                 this->SetIsConsoleLog(false);
                 this->SetFilePath(L"");
 
@@ -61,7 +61,7 @@ namespace vcc
                 this->SetIsLogSQL(false);
                 this->SetIsLogSQLResult(false);
                 break;
-            case LogPropertyType::All:
+            case LogConfigInitialType::All:
                 this->SetIsConsoleLog(true);
                 this->SetFilePath(filePath);
                 assert(!filePath.empty());
