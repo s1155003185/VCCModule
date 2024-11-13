@@ -6,8 +6,6 @@ enum class ObjectType
     NA
     , GenerationOption
     , GenerationOptionExport
-    , GitLog
-    // <vcc:custom sync="SKIP" gen="SKIP">
-    , GitForm
+    // <vcc:custom sync="RESERVE" gen="RESERVE">
     // </vcc:custom>
 };

@@ -8,7 +8,7 @@
 #define DLLEXPORT extern 
 #endif
 
-// <vcc:dllInterfaceHeader gen="FORCE">
+// <vcc:dllInterfaceHeader gen="REPLACE">
 // </vcc:dllInterfaceHeader>
 
 extern "C"
@@ -16,7 +16,7 @@ extern "C"
 
 DLLEXPORT int GetVersion();
 
-// <vcc:dllInterface gen="FORCE">
+// <vcc:dllInterface gen="REPLACE">
 // </vcc:dllInterface>
 }
 

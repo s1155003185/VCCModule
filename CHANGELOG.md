@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### [v0.2.4] - 2024-11-13: Form - Generate Java Form
+- Initialize Form
+- Fix vcc tag using wrong Key "SKIP" instead of "RESERVE"
+- Generate Java Form based on type workspace
+
 ### [v0.2.3] - 2024-10-20: Form - Generate Inherit Class
 - Initialize Application
 - Generate Inherit Class

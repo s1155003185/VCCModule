@@ -8,7 +8,7 @@
 //#include "object_factory.hpp"
 #include "object_type.hpp"
 
-// <vcc:customHeader sync="SKIP" gen="SKIP">
+// <vcc:customHeader sync="RESERVE" gen="RESERVE">
 // </vcc:customHeader>
 
 using namespace vcc;
@@ -76,5 +76,5 @@ bool Application::CloseForm(int64_t formId, bool isForce)
     return false;
 }
 
-// <vcc:custom sync="SKIP" gen="SKIP">
+// <vcc:custom sync="RESERVE" gen="RESERVE">
 // </vcc:custom>

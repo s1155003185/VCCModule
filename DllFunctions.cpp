@@ -6,7 +6,7 @@
 #include <wchar.h>
 
 
-// <vcc:dllInterfaceHeader gen="FORCE">
+// <vcc:dllInterfaceHeader gen="REPLACE">
 // </vcc:dllInterfaceHeader>
 
 int GetVersion()
@@ -14,5 +14,5 @@ int GetVersion()
   return 1;
 }
 
-// <vcc:dllInterface gen="FORCE">
+// <vcc:dllInterface gen="REPLACE">
 // </vcc:dllInterface>

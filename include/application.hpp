@@ -7,7 +7,7 @@
 #include "i_form.hpp"
 #include "object_type.hpp"
 
-// <vcc:customHeader sync="SKIP" gen="SKIP">
+// <vcc:customHeader sync="RESERVE" gen="RESERVE">
 // </vcc:customHeader>
 
 using namespace vcc;
@@ -30,7 +30,7 @@ class Application
         bool IsFormClosable(int64_t formId);
         bool CloseForm(int64_t formId, bool isForce = false);
 
-        // <vcc:custom sync="SKIP" gen="SKIP">
+        // <vcc:custom sync="RESERVE" gen="RESERVE">
         // </vcc:custom>
 };
 
