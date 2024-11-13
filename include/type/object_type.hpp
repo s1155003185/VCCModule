@@ -4,8 +4,6 @@
 enum class ObjectType
 {
     NA
-    , GenerationOption
-    , GenerationOptionExport
     // <vcc:custom sync="RESERVE" gen="RESERVE">
     // </vcc:custom>
 };
