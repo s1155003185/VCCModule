@@ -1,10 +1,11 @@
 // <vcc:vccproj sync="FULL" gen="FULL"/>
 #pragma once
 
-#include <map>
+#include <set>
 #include <memory>
 
 #include "i_form.hpp"
+#include "i_object.hpp"
 #include "object_type.hpp"
 
 // <vcc:customHeader sync="RESERVE" gen="RESERVE">
@@ -15,23 +16,54 @@ using namespace vcc;
 class Application
 {
     private:
-        int64_t _NextFormId = 0;
-        std::map<int64_t, std::shared_ptr<IForm>> _Forms;
+        std::set<std::shared_ptr<IObject>> _Forms;
+
+        static std::shared_ptr<IObject> GetFormSharedPtr(IObject *IObject);
+        static const IForm *GetIFormPtrFromIObject(IObject *obj);
+
+        // <vcc:customApplicationProperties sync="RESERVE" gen="RESERVE">
+        // </vcc:customApplicationProperties>
+        
+    private:
+        // <vcc:customApplicationPrivateFunctions sync="RESERVE" gen="RESERVE">
+        // </vcc:customApplicationPrivateFunctions>
+
+    protected:
+        // <vcc:customApplicationProtectedFunctions sync="RESERVE" gen="RESERVE">
+        // </vcc:customApplicationProtectedFunctions>
 
     public:
         Application() = default;
         ~Application() {}
  
         static void Run();
-        static int64_t Run(std::shared_ptr<IForm> form);
 
-        int64_t NewForm(ObjectType formType);
-        bool IsFormPresent(int64_t formId);
-        bool IsFormClosable(int64_t formId);
-        bool CloseForm(int64_t formId, bool isForce = false);
+        // Create Form
+        static std::shared_ptr<IObject> CreateForm(const ObjectType &objectType);
+        static void InitializeForm(IObject *form);
+        static void ReloadForm(IObject *form);
 
-        // <vcc:custom sync="RESERVE" gen="RESERVE">
-        // </vcc:custom>
+        // Form Action
+        static void DoFormAction(IObject *form, const int64_t &formProperty);
+        static int64_t GetFormActionFirstSeqNo(IObject *form);
+        static int64_t GetFormActionLastSeqNo(IObject *form);
+        
+        static int64_t RedoFormAction(IObject *form, const int64_t &noOfStep = 1);
+        static int64_t RedoFormActionToSeqNo(IObject *form, const int64_t &seqNo);
+
+        static int64_t UndoFormAction(IObject *form, const int64_t &noOfStep = 1);
+        static int64_t UndoFormActionToSeqNo(IObject *form, const int64_t &seqNo);
+
+        static int64_t ClearFormAction(IObject *form);
+        static int64_t TruncateFormAction(IObject *form);
+
+        // Close Form
+        static bool IsFormClosable(IObject *form);
+        static bool IsFormClosed(IObject *form);
+        static bool CloseForm(IObject *form, const bool &isForce = false);
+
+        // <vcc:customApplicationPublicFunctions sync="RESERVE" gen="RESERVE">
+        // </vcc:customApplicationPublicFunctions>
 };
 
 static std::unique_ptr<Application> application = nullptr;

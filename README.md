@@ -19,7 +19,7 @@ Please go to following session to see how to create VCC Project to generate c++ 
 Generate Form
 
 ## What's next
-Action
+Action, Git adjustment
 
 ## Features
 - Easy update project to model version instead of rewrite codebase. Just Update Project Genertor to newest version, execute Update and Generation.
@@ -119,6 +119,7 @@ Suitable for long term project
 ### Core
 -	Action Manager (Pending)
 -	Exception
+-	Form
 -	Helper (Keep update)
 -	Log Service
 -   Process Service
@@ -323,9 +324,7 @@ Sample
     "IsExcludeUnittest": false,
     "IsExcludeVCCUnitTest": false,
     "TypeWorkspace": "include/type",
-    "ActionTypeDirectory": "include/type",
     "ExceptionTypeDirectory": "include/type",
-    "ManagerTypeDirectory": "include/type",
     "ObjectTypeDirectory": "include/type",
     "ApplicationDirectoryHpp": "include",
     "ApplicationDirectoryCpp": "src",
@@ -402,10 +401,10 @@ IsExcludeVCCUnitTest
 TypeWorkspace
     In Generation mode, Generator will search files with suffix *_property.hpp to create Class, Property Accessor etc. Detail: Generation Rule.
 
-ActionTypeDirectory, ExceptionTypeDirectory, ManagerTypeDirectory, ObjectTypeDirectory
+ExceptionTypeDirectory, ObjectTypeDirectory
     Mandatory.
-    The location to export action_type.hpp, exception_type.hpp, manager_type.hpp, object_type.hpp
-    All are used to export to interface. Cannot delete those files. action_type may be moved to External/VCC/Form/Action/ in the future such that action can be optional.
+    The location to export exception_type.hpp, object_type.hpp
+    All are used to export to interface. Cannot delete those files.
 
 ApplicationDirectoryHpp, ApplicationDirectoryCpp
     Optional. Empty for no generation.
@@ -698,7 +697,7 @@ Note:
     e.g. VPGPersionProperty
 
 #### Class Attribute
-// [@@Form] [@@Inherit { "Class": "ClassName" }] [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Command xxx]
+// [@@Form] [@@Inherit { "Class": "ClassName" }] [@@Log { "IsInheritedFromParentObject": true }] [@@Action { "IsInheritedFromParentObject": true }] [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Command xxx]
 
 []: Optional
 @@: Key for attributes. Need to state for attribute
@@ -714,6 +713,20 @@ Note:
         Class
             Value is Parent Class
 
+[@@Log { "IsInheritedFromParentObject": true }]
+    Form Only
+    Attribute:
+        IsInheritedFromParentObject
+            Value is true or false. Default: false
+            If Value is true, Form will follow Parent Object Log Setting
+
+[@@Action { "IsInheritedFromParentObject": true }]
+    Form Only
+    Attribute:
+        IsInheritedFromParentObject
+            Value is true or false. Default: false
+            If Value is true, Form will add action to Parent Action Manager. When Undo Action, may affect other object that sharing same Action Manager. ie. Parent Form and other inheriting child Form
+            
 [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }]
     Generate Class as Json Object. Class will have attribute ToJson, SerializeJson and DeserializeJson
     Attribute:
@@ -749,6 +762,15 @@ Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Command xxx]
 
 {ClassMacro}
     Getter, Setter stated in class_macro.hpp. If it is not match with any class macro in class_macro.hpp, the rest will be ignored
+    Current Options:
+        GETSET(type, name, defaultValue)
+        GETSET_SPTR_NULL(type, name)
+        VECTOR(type, name)
+        VECTOR_SPTR(type, name)
+        MAP(type, name)
+        MAP_SPTR_R(type1, type2, name)
+        ORDERED_MAP(type1, type2, name)
+        ORDERED_MAP_SPTR_R(type1, type2, name)
 
 [@@AccessMode]
     Default is @@ReadWrite.
@@ -808,9 +830,7 @@ enum class VPGGenerationOptionProperty
     // Files
     TypeWorkspace, // GETSET(std::wstring, TypeWorkspace, L"include/Type");
 
-    ActionTypeDirectory, // GETSET(std::wstring, ActionTypeDirectory, L"include/Type");
     ExceptionTypeDirectory, // GETSET(std::wstring, ExceptionTypeDirectory, L"include/Type");
-    ManagerTypeDirectory, // GETSET(std::wstring, ManagerTypeDirectory, L"include/Type");
     ObjectTypeDirectory, // GETSET(std::wstring, ObjectTypeDirectory, L"include/Type");
 
     ObjectDirectoryHpp, // GETSET(std::wstring, ObjectDirectoryHpp, L"include/Model");
@@ -928,7 +948,6 @@ public static void main(String args[]) {
     });
 }
 ```
-
 
 ****
 ## Versioning Common Codebase Project Generator VSCode Extension
@@ -1066,6 +1085,15 @@ X(Twitter) @VCCProject
 
 ****
 ## Release Log
+
+### [v0.2.5] - 2024-12-08: Form - Generate Java Form
+- Form Action - Create, Reload, Close
+- Remove BaseObject template (No method to convert IObject and IForm if there is template)
+- Fix cannot throw exception when excuting release exe
+- Generator Support Action
+- Review VCC Tag
+- Class Attributes support @@Log and @@Action
+- Remove ManagerType and ActionType
 
 ### [v0.2.4] - 2024-11-13: Form - Generate Form
 - Initialize Form

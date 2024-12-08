@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### [v0.2.5] - 2024-12-08: Form - Generate Java Form
+- Form Action - Create, Reload, Close
+- Remove BaseObject template (No method to convert IObject and IForm if there is template)
+- Fix cannot throw exception when excuting release exe
+- Generator Support Action
+- Review VCC Tag
+- Class Attributes support @@Log and @@Action
+- Remove ManagerType and ActionType
+
 ### [v0.2.4] - 2024-11-13: Form - Generate Form
 - Initialize Form
 - Generate Form

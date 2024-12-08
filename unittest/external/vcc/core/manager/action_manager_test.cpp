@@ -10,7 +10,7 @@
 
 using namespace vcc;
 
-class ActionManagerTestClass final : public BaseAction<ActionManagerTestClass>
+class ActionManagerTestClass final : public BaseAction
 {
     private:
         int uuid = 0;
@@ -27,17 +27,17 @@ class ActionManagerTestClass final : public BaseAction<ActionManagerTestClass>
     public:
         virtual std::wstring GetMessage() override { return std::to_wstring(uuid); }
  
-        ActionManagerTestClass(int uuid) : BaseAction(ActionType::NA) { this->uuid = uuid; }
+        ActionManagerTestClass(int uuid) : BaseAction() { this->uuid = uuid; }
         ~ActionManagerTestClass() {}
 };
 
 class ActionManagerTest : public testing::Test 
 {
     private:
-        MANAGER(ActionManager, Manager, nullptr);
+        MANAGER_SPTR(ActionManager, Manager, nullptr);
 
     public:
-        std::shared_ptr<IAction> CreateAction(int index)
+        std::shared_ptr<BaseAction> CreateAction(int index)
         {
             return std::make_shared<ActionManagerTestClass>(index);
         }
