@@ -15,5 +15,5 @@ class PropertyAccessorFactory : public BaseFactory
         virtual ~PropertyAccessorFactory() {}
 
     public:
-        static std::shared_ptr<IPropertyAccessor> Create(std::shared_ptr<IObject> object) {}
+        static std::shared_ptr<IPropertyAccessor> Create(std::shared_ptr<IObject> object);
 };
