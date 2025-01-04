@@ -8,6 +8,7 @@
 #include "log_config.hpp"
 #include "object_type.hpp"
 #include "state.hpp"
+#include "thread_manager.hpp"
 
 namespace vcc
 {
@@ -16,6 +17,7 @@ namespace vcc
     protected:
         mutable std::shared_ptr<LogConfig> _LogConfig = nullptr;
         mutable std::shared_ptr<ActionManager> _ActionManager = nullptr;
+        mutable std::shared_ptr<ThreadManager> _ThreadManager = nullptr;
 
         mutable State _State = State::Active;
         
@@ -24,7 +26,8 @@ namespace vcc
         virtual ~BaseForm() = default;
 
         virtual void OnInitialize() const override {}
-        virtual void OnReload() const override {}
+        virtual void OnInitializeComponents() const override {}
+        virtual void OnInitializeValues() const override {}
         virtual bool OnIsClosable() const override { return true; }
         virtual bool OnClose() const override { return true; }
     public:
@@ -36,6 +39,10 @@ namespace vcc
         virtual std::shared_ptr<ActionManager> GetActionManager() const override;
         virtual void SetActionManager(std::shared_ptr<ActionManager> actionManager) const override;
 
+        // Thead
+        virtual std::shared_ptr<ThreadManager> GetThreadManager() const override;
+        virtual void SetThreadManager(std::shared_ptr<ThreadManager> threadManager) const override;
+
         // State
         virtual State GetState() const override;
         virtual bool IsClosable() const override;
@@ -43,17 +50,19 @@ namespace vcc
 
         // Initialize
         virtual void Initialize() const override;
-        virtual void Reload() const override;
+        virtual void InitializeComponents() const override;
+        virtual void InitializeValue() const override;
         
         // Action
+        virtual void ExecuteAction(std::shared_ptr<IAction> action, bool isNoHistory) override;
         virtual int64_t GetActionFirstSeqNo() const override;
         virtual int64_t GetActionLastSeqNo() const override;
         
-        virtual int64_t RedoAction(const int64_t &noOfStep = 1) const override;
-        virtual int64_t RedoActionToSeqNo(const int64_t &seqNo) const override;
+        virtual int64_t RedoAction(const int64_t &noOfStep = 1) override;
+        virtual int64_t RedoActionToSeqNo(const int64_t &seqNo) override;
 
-        virtual int64_t UndoAction(const int64_t &noOfStep = 1) const override;
-        virtual int64_t UndoActionToSeqNo(const int64_t &seqNo) const  override;
+        virtual int64_t UndoAction(const int64_t &noOfStep = 1) override;
+        virtual int64_t UndoActionToSeqNo(const int64_t &seqNo) override;
 
         virtual int64_t ClearAction() const override;
         virtual int64_t TruncateAction() const override;

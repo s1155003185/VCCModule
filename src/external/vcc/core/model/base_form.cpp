@@ -37,6 +37,20 @@ namespace vcc
         _ActionManager = actionManager;
     }
 
+    std::shared_ptr<ThreadManager> BaseForm::GetThreadManager() const
+    {
+        TRY
+            auto baseForm = std::dynamic_pointer_cast<BaseForm>(_ParentObject);
+            return (baseForm != nullptr && _ThreadManager == nullptr) ? baseForm->GetThreadManager() : _ThreadManager;
+        CATCH
+        return nullptr;
+    }
+
+    void BaseForm::SetThreadManager(std::shared_ptr<ThreadManager> threadManager) const
+    {
+        _ThreadManager = threadManager;
+    }
+
     State BaseForm::GetState() const
     {
         TRY
@@ -64,17 +78,38 @@ namespace vcc
     void BaseForm::Initialize() const
     {
         TRY
+            InitializeComponents();
+            InitializeValue();
             OnInitialize();
         CATCH
     }
 
-    void BaseForm::Reload() const
+    void BaseForm::InitializeComponents() const
     {
         TRY
-            OnReload();
+            OnInitialize();
         CATCH
     }
 
+    void BaseForm::InitializeValue() const
+    {
+        TRY
+            OnInitializeValues();
+        CATCH
+    }
+
+    void BaseForm::ExecuteAction(std::shared_ptr<IAction> action, bool isNoHistory)
+    {
+        TRY
+            auto actionManager = GetActionManager();
+            if (isNoHistory || actionManager == nullptr)
+                action->Redo();
+            else {
+                actionManager->DoAction(action);
+            }
+        CATCH
+    }
+    
     int64_t BaseForm::GetActionFirstSeqNo() const
     {
         TRY
@@ -95,7 +130,7 @@ namespace vcc
         return -1;
     }
     
-    int64_t BaseForm::RedoAction(const int64_t &noOfStep) const
+    int64_t BaseForm::RedoAction(const int64_t &noOfStep)
     {
         TRY
             auto actionManager = GetActionManager();
@@ -105,7 +140,7 @@ namespace vcc
         return -1;
     }
 
-    int64_t BaseForm::RedoActionToSeqNo(const int64_t &seqNo) const
+    int64_t BaseForm::RedoActionToSeqNo(const int64_t &seqNo)
     {
         TRY
             auto actionManager = GetActionManager();
@@ -115,7 +150,7 @@ namespace vcc
         return -1;
     }
 
-    int64_t BaseForm::UndoAction(const int64_t &noOfStep) const
+    int64_t BaseForm::UndoAction(const int64_t &noOfStep)
     {
         TRY
             auto actionManager = GetActionManager();
@@ -125,7 +160,7 @@ namespace vcc
         return -1;
     }
 
-    int64_t BaseForm::UndoActionToSeqNo(const int64_t &seqNo) const
+    int64_t BaseForm::UndoActionToSeqNo(const int64_t &seqNo)
     {
         TRY
             auto actionManager = GetActionManager();

@@ -6,6 +6,8 @@ Maintain those standard already stable long time ago. No reason to implement twi
 Current Stage Objective: Start VCC Project Manager (Multi Project Handling), including Java Interface, Thread, Form, Action, Git.
 
 Note: Still in initialize version, will have full review when official release
+Note: Need to review usage of const - always have const for getter and no const for setter
+Note: Need to review name of helper function
 
 Note: For Generator, if version not match, it will drop the template in Document/VCC/VCCModule and clone new one.
     But in Window version, Drop Create Method not work as Git still holds the folder a few while after executing Git Command.
@@ -16,10 +18,10 @@ Please go to following session to see how to create VCC Project to generate c++ 
 - Tutorial for Create VCC DLL Project to generate dll with Java Interface
 
 ## What's new
-Generate Form
+Generate Action
 
 ## What's next
-Action, Git adjustment
+Git, Review function naming
 
 ## Features
 - Easy update project to model version instead of rewrite codebase. Just Update Project Genertor to newest version, execute Update and Generation.
@@ -117,7 +119,7 @@ Suitable for long term project
 ****
 ## VCCModule Feature
 ### Core
--	Action Manager (Pending)
+-	Action Manager
 -	Exception
 -	Form
 -	Helper (Keep update)
@@ -328,6 +330,8 @@ Sample
     "ObjectTypeDirectory": "include/type",
     "ApplicationDirectoryHpp": "include",
     "ApplicationDirectoryCpp": "src",
+    "ActionDirectoryHpp": "include/action",
+    "ActionDirectoryCpp": "src/action",
     "FormDirectoryHpp": "include/form",
     "FormDirectoryCpp": "src/form",
     "ObjectDirectoryHpp": "include/model",
@@ -409,6 +413,10 @@ ExceptionTypeDirectory, ObjectTypeDirectory
 ApplicationDirectoryHpp, ApplicationDirectoryCpp
     Optional. Empty for no generation.
     In Generation mode, application.hpp and application.cpp are generated here.
+
+ActionDirectoryHpp, ActionDirectoryCpp
+    Optional. Empty then generate in the same file with Form
+    In Generation Mode, action files are generated here.
 
 FormDirectoryHpp, FormDirectoryCpp
     Optional. Empty then follow ObjectDirectoryHpp, ObjectDirectoryCpp.
@@ -697,7 +705,7 @@ Note:
     e.g. VPGPersionProperty
 
 #### Class Attribute
-// [@@Form] [@@Inherit { "Class": "ClassName" }] [@@Log { "IsInheritedFromParentObject": true }] [@@Action { "IsInheritedFromParentObject": true }] [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Command xxx]
+// [@@Form] [@@Inherit { "Class": "ClassName" }] [@@Log { "IsIndependent": true }] [@@Action { "IsIndependent": true }] [@@Thread { "IsIndependent": true } ] [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Command xxx]
 
 []: Optional
 @@: Key for attributes. Need to state for attribute
@@ -713,20 +721,30 @@ Note:
         Class
             Value is Parent Class
 
-[@@Log { "IsInheritedFromParentObject": true }]
+[@@Log { "IsIndependent": true }]
     Form Only
     Attribute:
-        IsInheritedFromParentObject
+        IsIndependent
             Value is true or false. Default: false
-            If Value is true, Form will follow Parent Object Log Setting
+            If value is false, Form will follow Parent Object Log Setting
+            If Value is true, Form will have new Log config
 
-[@@Action { "IsInheritedFromParentObject": true }]
+[@@Action { "IsIndependent": true }]
     Form Only
     Attribute:
-        IsInheritedFromParentObject
+        IsIndependent
             Value is true or false. Default: false
-            If Value is true, Form will add action to Parent Action Manager. When Undo Action, may affect other object that sharing same Action Manager. ie. Parent Form and other inheriting child Form
-            
+            If value is false, Form will follow Parent Object Action Manager (share same history)
+            If Value is true, Form will have new Action History (independent history)
+
+[@@Thread { "IsIndependent": true }]
+    Form Only
+    Attribute:
+        IsIndependent
+            Value is true or false. Default: false
+            If value is false, Form will follow Parent Object Thead Manager (share same thread pool)
+            If Value is true, Form will have independent Thread Mamanger (independent thread pool)
+
 [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }]
     Generate Class as Json Object. Class will have attribute ToJson, SerializeJson and DeserializeJson
     Attribute:
@@ -751,7 +769,7 @@ Note:
     Command used in VCC generator, can be any text in xxx without @@
 
 #### Field Attribute
-Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Command xxx]
+Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Class { "Properties\ : [ "GETSET(std::wstring, Name, L\"\")", "GETSET(int64_t, Age, 0)" ], "Assignment": [ \"Sam\", \"6\" ] }] [@@NoHistory] [@@Command xxx]
 
 {...}: Compulsory
 []: Optional
@@ -761,16 +779,36 @@ Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Command xxx]
     Enum class enum. Used in property Accessor
 
 {ClassMacro}
-    Getter, Setter stated in class_macro.hpp. If it is not match with any class macro in class_macro.hpp, the rest will be ignored
-    Current Options:
-        GETSET(type, name, defaultValue)
-        GETSET_SPTR_NULL(type, name)
-        VECTOR(type, name)
-        VECTOR_SPTR(type, name)
-        MAP(type, name)
-        MAP_SPTR_R(type1, type2, name)
-        ORDERED_MAP(type1, type2, name)
-        ORDERED_MAP_SPTR_R(type1, type2, name)
+    Macro stated in class_macro.hpp. If it is not match with any class macro in class_macro.hpp, the rest will be ignored
+    Note: No Initialize method in Class Object (except Form). Otherwise need to handle more than one place after adjustment of properties.
+    Please use recreation of object if initialize is needed.
+
+    Current Options for Properties:
+        | Macro | Description | Example |
+        | --- | --- | --- |
+        | GETSET(type, name, defaultValue) |  Normal Type and Enum.  | GETSET(std::wstring, Name, L"") |
+        | GETSET_SPTR(type, name, ...) | Object. Initialize in class definition. It may cause infinite loop when class initializaion. Please use GETSET_SPTR_NULL. | GETSET_SPTR(GitOption, Name, _LogConfig, L"Remark") |
+        | GETSET_SPTR_NULL(type, name) | Object and initialize as nullptr. Please initialize it after class creation. | GETSET_SPTR_NULL(GitOption, Name) |
+        | VECTOR(type, name) | std::vector<type>. Vector for Normal Type and Enum. | VECTOR(double, Name) |
+        | VECTOR_SPTR(type, name) | std::vecotr<std::shared_ptr<type>>. Vector for Object. | VECTOR_SPTR(GitOption, Name) |
+        | MAP(type1, type2, name) | Map of Normal Type and Enum. | MAP(std::wstring, double, Name) |
+        | MAP_SPTR_R(type1, type2, name) | Map of Object. Only allow Object at type2. If want to set object at type1, please use int64_t | MAP(type1, type2, name) |
+        | ORDERED_MAP(type1, type2, name) | std::vector<std::pair<type1, type2>>. Allow to use method of vector and map | ORDERED_MAP(type1, type2, name) |
+        | ORDERED_MAP_SPTR_R(type1, type2, name) | std::vector<std::pair<type1, std::shared_ptr<type2>>>. Allow to use method of vector and map | ORDERED_MAP(type1, type2, name) |
+
+        Pending for SET
+
+    Current Options for Manager: (Form Only)
+        | Macro | Description | Example |
+        | --- | --- | --- |
+        | MANAGER_SPTR(type, name, ...) |  Manager. Initialize in class definition. It may cause infinite loop when class initializaion. Please use MANAGER_SPTR_NULL | MANAGER_SPTR(GitManager, GitManager1, _LogConfig) |
+        | MANAGER_SPTR_NULL(type, name, ...) |  Manager. Initialize at Initialize() | MANAGER_SPTR_NULL(GitManager, GitManager1) |
+        | MANAGER_SPTR_PARENT(type, name, parentClass) |  Manager. If value is nullptr, then will use parentClass->Get##name(), else will use local manager. Please ensure parentClass is Form also and have same type. Initialize as nullptr at Initialize(). | MANAGER_SPTR_NULL(GitManager, GitManager1, GitBaseManager) |
+
+    Current Option for Action:
+        | Macro | Description | Example |
+        | --- | --- | --- |
+        | ACTION(name) | Generator will create void Do##name() and generate Action Class. Please handle logic in .cpp file. | ACTION(AddWorkspace) |
 
 [@@AccessMode]
     Default is @@ReadWrite.
@@ -785,7 +823,22 @@ Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Command xxx]
             Cannot Access via Property Accessor
 
 [@@Inherit]
-    If stated, generate will not generate Getter and Setter.
+    If stated, generate will not generate Getter and Setter, Manager, Action, etc.
+
+[@@Class { "Properties\ : [ "GETSET(std::wstring, Name, L\"\")", "GETSET(int64_t, Age, 0)" ], "Assignments": [ \"Sam\", \"6\" ] }]
+    Action Only.
+    Option:
+        Properties
+            Value is array of {ClassMacro}. As it is in json string, special characters need to be escaped.
+
+        Assignments
+            Value is array of values that should be initialized when creating object. Number of elements should be the same as that of Properties.
+            If not stated, Action() will be genrated.
+            If stated, Action(L"Sam", 6) will be generated.
+
+[@@NoHistory]
+    Action Only.
+    Will not add to Action Manager. After executing Do, this action cannot be found in Action List. So, this action cannot be Undo.
 
 [@@Command xxx]
     Command used in VCC generator, can be any text in xxx without @@
@@ -1085,6 +1138,14 @@ X(Twitter) @VCCProject
 
 ****
 ## Release Log
+
+### [v0.2.6] - 2025-01-05: Form - Action
+- Support @@Thread
+- @@Log, @@Action, @@Thread use IsIndependent insead of IsInheritFromParent
+- Support Class Macro ACTION, MANAGER_SPTR, MANAGER_SPTR_NULL, MANAGER_SPTR_PARENT
+- Add InitializeComponent(), OnInitialzieComponent(), InitialzeValues() and OnInitializeValues()
+- Remove Java Form Initialize() and Reload(). Use should use Action to initalize or reload
+- Initialzie Action
 
 ### [v0.2.5] - 2024-12-08: Form - Generate Java Form
 - Form Action - Create, Reload, Close

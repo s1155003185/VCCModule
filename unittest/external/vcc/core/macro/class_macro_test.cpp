@@ -43,7 +43,7 @@ class ClassMacroTestClass : public BaseObject
         
         virtual std::shared_ptr<IObject> Clone() const override
         {
-            std::shared_ptr<ClassMacroTestClass> obj = std::make_shared<ClassMacroTestClass>(*this);
+            auto obj = std::make_shared<ClassMacroTestClass>(*this);
             obj->CloneVector(this->GetVector());
             obj->CloneVectorSPTR(this->GetVectorSPTR());
             obj->CloneSet(this->GetSet());
@@ -60,8 +60,8 @@ class ClassMacroTestClass : public BaseObject
 TEST(ClassMacroTest, CloneSingle)
 {
     int i = 10;
-    std::unique_ptr<ClassMacroTestClassElement> testClass = std::make_unique<ClassMacroTestClassElement>(i);
-    std::shared_ptr<ClassMacroTestClassElement> cloneClass = std::dynamic_pointer_cast<ClassMacroTestClassElement>(testClass->Clone());
+    auto testClass = std::make_unique<ClassMacroTestClassElement>(i);
+    auto cloneClass = std::dynamic_pointer_cast<ClassMacroTestClassElement>(testClass->Clone());
     EXPECT_EQ(cloneClass->GetIndex(), i);
 }
 
@@ -70,7 +70,7 @@ TEST(ClassMacroTest, Clone)
     std::unique_ptr<ClassMacroTestClass> testClass = std::make_unique<ClassMacroTestClass>();
     testClass->SetNumber(1);
 
-    std::shared_ptr<ClassMacroTestClass> cloneClass = std::dynamic_pointer_cast<ClassMacroTestClass>(testClass->Clone());
+    auto cloneClass = std::dynamic_pointer_cast<ClassMacroTestClass>(testClass->Clone());
     EXPECT_EQ(testClass->GetNumber(), cloneClass->GetNumber());
 }
 
@@ -107,7 +107,7 @@ TEST(ClassMacroTest, Vector)
     EXPECT_EQ(testClass->GetVector().at(5), 4);
     EXPECT_EQ(testClass->GetVector().at(6), 3);
 
-    testClass->RemoveVector(1);
+    testClass->RemoveVectorByIndex(1);
     EXPECT_TRUE(testClass->GetVector().size() == 6);
     EXPECT_EQ(testClass->GetVector().at(0), 10);
     EXPECT_EQ(testClass->GetVector().at(1), 12);
@@ -143,7 +143,7 @@ TEST(ClassMacroTest, Vector)
     EXPECT_EQ(testClass->GetVectorSPTR().at(5)->GetIndex(), 4);
     EXPECT_EQ(testClass->GetVectorSPTR().at(6)->GetIndex(), 3);
 
-    testClass->RemoveVectorSPTR(1);
+    testClass->RemoveVectorSPTRByIndex(1);
     EXPECT_TRUE(testClass->GetVectorSPTR().size() == 6);
     EXPECT_EQ(testClass->GetVectorSPTR().at(0)->GetIndex(), 10);
     EXPECT_EQ(testClass->GetVectorSPTR().at(1)->GetIndex(), 12);
