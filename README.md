@@ -5,20 +5,13 @@ Maintain those standard already stable long time ago. No reason to implement twi
 
 Current Stage Objective: Start VCC Project Manager (Multi Project Handling), including Java Interface, Thread, Form, Action, Git.
 
-Note: Still in initialize version, will have full review when official release
-Note: Need to review usage of const - always have const for getter and no const for setter
-Note: Need to review name of helper function
-
-Note: For Generator, if version not match, it will drop the template in Document/VCC/VCCModule and clone new one.
-    But in Window version, Drop Create Method not work as Git still holds the folder a few while after executing Git Command.
-    If find that generator have generated wrong file, it may because of outdated template. Please remove the template and try again.
-    For example, if folder name has been changed from Uppercase to Lowercase in Git Response, Git may not be able to update because git is not case sensitive.
+Note: Still in initialize version. This is the last subversion before alpha release. Reviewing function name.
 
 Please go to following session to see how to create VCC Project to generate c++ dll with Java Interface
 - Tutorial for Create VCC DLL Project to generate dll with Java Interface
 
 ## What's new
-Generate Action
+Review Property Accessor
 
 ## What's next
 Git, Review function naming
@@ -1139,6 +1132,13 @@ X(Twitter) @VCCProject
 ****
 ## Release Log
 
+### [v0.3.0] - 2025-01-26: Review - Review Property Accessor
+- Class macro VECTOR, VECTOR_SPTR add Remove method
+- Remove memory_macro.hpp
+- Review Class Macro and Property Accessor.
+    - add AtIndex and AtKey for Vector, Map and Ordered Map. (Compiler cannot distinguish when Ordered Map having int key)
+    - Property Accessor Seperate Read, Write, Remove, Clone to Read, ReadAtIndex, ReadAtKey, Write, WriteAtIndex, WriteAtKey, RemoveAtIndex, RemoveAtKey, CloneAtIndex, CloneAtKey. (Compiler cannot distinguish pointer and integer)
+    
 ### [v0.2.6] - 2025-01-05: Form - Action
 - Support @@Thread
 - @@Log, @@Action, @@Thread use IsIndependent insead of IsInheritFromParent

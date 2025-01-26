@@ -8,7 +8,6 @@
 #include "exception_macro.hpp"
 #include "exception_type.hpp"
 #include "file_helper.hpp"
-#include "memory_macro.hpp"
 #include "string_helper.hpp"
 #include "vector_helper.hpp"
 
@@ -26,7 +25,7 @@ namespace vcc
     {
         JsonInternalType result = JsonInternalType::Null;
         TRY
-            result = GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalType();
+            result = GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalType();
         CATCH
         return result;
     }
@@ -77,7 +76,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalType() == JsonInternalType::Null;
+            return GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalType() == JsonInternalType::Null;
         CATCH
         return false;        
     }
@@ -86,7 +85,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalType(JsonInternalType::Null);
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalType(JsonInternalType::Null);
         CATCH
     }
     
@@ -94,7 +93,7 @@ namespace vcc
     {
         TRY
             ValidateKeyNotFound(key);
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Null);
             _JsonInternalNameValuePairs.push_back(std::make_pair(key, json));
         CATCH
@@ -104,7 +103,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue() == L"true";
+            return GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue() == L"true";
         CATCH
         return false;
     }
@@ -113,8 +112,8 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalType(JsonInternalType::Boolean);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalValue(value ? L"true" : L"false");
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalType(JsonInternalType::Boolean);
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalValue(value ? L"true" : L"false");
         CATCH
     }
 
@@ -122,7 +121,7 @@ namespace vcc
     {
         TRY
             ValidateKeyNotFound(key);
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Boolean);
             json->SetJsonInternalValue(value ? L"true" : L"false");
             _JsonInternalNameValuePairs.push_back(std::make_pair(key, json));
@@ -133,7 +132,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return std::stod(GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue());
+            return std::stod(GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue());
         CATCH
         return 0.0;        
     }
@@ -142,7 +141,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return std::stod(GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue());
+            return std::stod(GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue());
         CATCH
         return 0.0;        
     }
@@ -164,10 +163,10 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalType(JsonInternalType::Number);
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalType(JsonInternalType::Number);
             std::wostringstream oss;
             oss << std::fixed << std::setprecision(decimalPlaces) << value;
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalValue(oss.str());
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalValue(oss.str());
         CATCH
     }
 
@@ -175,7 +174,7 @@ namespace vcc
     {
         TRY
             ValidateKeyNotFound(key);
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Number);
             json->SetJsonInternalValue(ToString(value, decimalPlaces));
             _JsonInternalNameValuePairs.push_back(std::make_pair(key, json));
@@ -186,7 +185,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return std::stoi(GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue());
+            return std::stoi(GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue());
         CATCH
         return 0;
     }
@@ -195,7 +194,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return std::stoll(GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue());
+            return std::stoll(GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue());
         CATCH
         return 0;
     }
@@ -204,8 +203,8 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalType(JsonInternalType::Number);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalValue(std::to_wstring(value));
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalType(JsonInternalType::Number);
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalValue(std::to_wstring(value));
         CATCH
     }
 
@@ -213,7 +212,7 @@ namespace vcc
     {
         TRY
             ValidateKeyNotFound(key);
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Number);
             json->SetJsonInternalValue(std::to_wstring(value));
             _JsonInternalNameValuePairs.push_back(std::make_pair(key, json));
@@ -224,7 +223,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            std::wstring result = GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue();
+            std::wstring result = GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue();
             if (result.length() != 1)
                 THROW_EXCEPTION_MSG(ExceptionType::ParserError, L"Json Value of key " + key + L" is not char");
             return wstr2str(result)[0];
@@ -236,7 +235,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            std::wstring result = GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue();
+            std::wstring result = GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue();
             if (result.length() != 1)
                 THROW_EXCEPTION_MSG(ExceptionType::ParserError, L"Json Value of key " + key + L" is not wchar_t");
             return result[0];
@@ -248,7 +247,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalValue();
+            return GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalValue();
         CATCH
         return L"";
     }
@@ -257,8 +256,8 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalType(JsonInternalType::String);
-            GetJsonInternalNameValuePairsByKey(key)->SetJsonInternalValue(value);
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalType(JsonInternalType::String);
+            GetJsonInternalNameValuePairsAtKey(key)->SetJsonInternalValue(value);
         CATCH
     }
 
@@ -266,7 +265,7 @@ namespace vcc
     {
         TRY
             ValidateKeyNotFound(key);
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::String);
             json->SetJsonInternalValue(value);
             _JsonInternalNameValuePairs.push_back(std::make_pair(key, json));
@@ -277,8 +276,8 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            if (GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalArray().size() > 0)
-                return GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalArray().at(0);
+            if (GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalArray().size() > 0)
+                return GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalArray().at(0);
         CATCH
         return nullptr;
     }
@@ -287,8 +286,8 @@ namespace vcc
     // {
     //     TRY
     //         object->SetJsonInternalType(JsonInternalType::Json);
-    //         GetJsonInternalNameValuePairsByKey(key)->ClearArray();
-    //         GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalArray().push_back(std::make_pair(key, object));
+    //         GetJsonInternalNameValuePairsAtKey(key)->ClearArray();
+    //         GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalArray().push_back(std::make_pair(key, object));
     //     CATCH
     // }
 
@@ -298,7 +297,7 @@ namespace vcc
             ValidateKeyNotFound(key);
             object->SetJsonInternalType(JsonInternalType::Json);
 
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Object);
             json->InsertJsonInternalArray(object);
             _JsonInternalNameValuePairs.push_back(std::make_pair(key, json));
@@ -309,7 +308,7 @@ namespace vcc
     {
         TRY
             ValidateKeyIsFound(key);
-            return GetJsonInternalNameValuePairsByKey(key)->GetJsonInternalArray();
+            return GetJsonInternalNameValuePairsAtKey(key)->GetJsonInternalArray();
         CATCH
         static std::vector<std::shared_ptr<Json>> emptyVector;
         emptyVector.clear();
@@ -320,8 +319,8 @@ namespace vcc
     // {
     //     TRY
     //         array->SetJsonInternalType(JsonInternalType::Array);
-    //         GetJsonInternalNameValuePairsByKey(key)->ClearArray();
-    //         GetJsonInternalNameValuePairsByKey(key)->InsertJsonInternalArray();
+    //         GetJsonInternalNameValuePairsAtKey(key)->ClearArray();
+    //         GetJsonInternalNameValuePairsAtKey(key)->InsertJsonInternalArray();
     //     CATCH
     // }
 
@@ -337,7 +336,7 @@ namespace vcc
     void Json::AddArrayNull() const
     {
         TRY
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Null);
             _JsonInternalArray.push_back(json);
         CATCH
@@ -354,7 +353,7 @@ namespace vcc
     void Json::AddArrayBool(bool value) const
     {
         TRY
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Boolean);
             json->SetJsonInternalValue(value ? L"true" : L"false");
             _JsonInternalArray.push_back(json);
@@ -372,7 +371,7 @@ namespace vcc
     void Json::AddArrayDouble(double value, size_t decimalPlaces) const
     {
         TRY
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Number);
             json->SetJsonInternalValue(ToString(value, decimalPlaces));
             _JsonInternalArray.push_back(json);
@@ -390,7 +389,7 @@ namespace vcc
     void Json::AddArrayInt(int64_t value) const
     {
         TRY
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Number);
             json->SetJsonInternalValue(std::to_wstring(value));
             _JsonInternalArray.push_back(json);
@@ -428,7 +427,7 @@ namespace vcc
     void Json::AddArrayString(const std::wstring &value) const
     {
         TRY
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::String);
             json->SetJsonInternalValue(value);
             _JsonInternalArray.push_back(json);
@@ -448,7 +447,7 @@ namespace vcc
         TRY
             object->SetJsonInternalType(JsonInternalType::Json);
 
-            DECLARE_SPTR(Json, json);
+            auto json = std::make_shared<Json>();
             json->SetJsonInternalType(JsonInternalType::Object);
             json->InsertJsonInternalArray(object);
             _JsonInternalArray.push_back(json);

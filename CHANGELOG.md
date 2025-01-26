@@ -1,6 +1,15 @@
 # Change Log
 
 ## [Unreleased]
+- Review function naming
+- Git
+
+### [v0.3.0] - 2025-01-26: Review - Review Property Accessor
+- Class macro VECTOR, VECTOR_SPTR add Remove method
+- Remove memory_macro.hpp
+- Review Class Macro and Property Accessor.
+    - add AtIndex and AtKey for Vector, Map and Ordered Map. (Compiler cannot distinguish when Ordered Map having int key)
+    - Property Accessor Seperate Read, Write, Remove, Clone to Read, ReadAtIndex, ReadAtKey, Write, WriteAtIndex, WriteAtKey, RemoveAtIndex, RemoveAtKey, CloneAtIndex, CloneAtKey. (Compiler cannot distinguish pointer and integer)
 
 ### [v0.2.6] - 2025-01-05: Form - Action
 - Support @@Thread
