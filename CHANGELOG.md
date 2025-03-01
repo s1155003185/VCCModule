@@ -1,7 +1,12 @@
 # Change Log
 
 ## [Unreleased]
-- Git
+- Add field attribute @@NoJson
+
+### [v0.3.2] - 2025-03-01: Review - Initialize Git Manager
+- Git Review
+- Add vpm.config.json. Default location is ~/Documents/vcc/config
+- Exception Macro add VALIDATE
 
 ### [v0.3.1] - 2025-02-08: Review - Review Function Name
 - Review helper function naming
