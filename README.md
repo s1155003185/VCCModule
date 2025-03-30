@@ -410,6 +410,8 @@ ApplicationDirectoryHpp, ApplicationDirectoryCpp
 ActionDirectoryHpp, ActionDirectoryCpp
     Optional. Empty then generate in the same file with Form
     In Generation Mode, action files are generated here.
+    Action Argument class follows normal class generation rules.
+    To Generate Action Argument Class, Action Class and Form Class in same file, need to put Action Argument Property and Form Property in the same file and set ActionDirectoryHpp and ActionDirectoryCpp be empty.
 
 FormDirectoryHpp, FormDirectoryCpp
     Optional. Empty then follow ObjectDirectoryHpp, ObjectDirectoryCpp.
@@ -480,6 +482,19 @@ Exports
         Relative path based on Workspace.
         In Generation Mode, Java class file will be generated in path specified.
         In Java, it must have prefix src/main/java
+
+#### Naming rules
+Generator will only copy the folder without renaming but using c++ class name as file name while converting c++ class to Java class
+
+C++
+    Folder: name must be lowercase and no seperator such as "_"
+    Filea: name must be lowercase and sperated by "_"
+
+Java
+    Folder: name must be lowercase and no seperator such as "_"
+    Filea: name must be same as Class name
+
+
 
 ### Update Rule
 Procedure:
@@ -698,7 +713,7 @@ Note:
     e.g. VPGPersionProperty
 
 #### Class Attribute
-// [@@Form] [@@Inherit { "Class": "ClassName" }] [@@Log { "IsIndependent": true }] [@@Action { "IsIndependent": true }] [@@Thread { "IsIndependent": true } ] [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Command xxx]
+// [@@Form] [@@ActionArgument] [@@Inherit { "Class": "ClassName" }] [@@Log { "IsIndependent": true }] [@@Action { "IsIndependent": true }] [@@Thread { "IsIndependent": true } ] [@@Json { "Key.NamingStyle" : "PascalCase", "Value.DecimalPlaces":2 }] [@@Command xxx]
 
 []: Optional
 @@: Key for attributes. Need to state for attribute
@@ -708,6 +723,10 @@ Note:
     This Class is a form.
     If hpp file contains both object and form, generator will generate files under Form Directory instead of Object Directory.
 
+[@@ActionArgument]
+    This Class is an Action Argument.
+    Action only. It will generated in the same file with Action
+    
 [@@Inherit { "Class": "ClassName" }]
     Generate Class that inherit ClassName
     Attribute:
@@ -762,7 +781,7 @@ Note:
     Command used in VCC generator, can be any text in xxx without @@
 
 #### Field Attribute
-Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Class { "Properties\ : [ "GETSET(std::wstring, Name, L\"\")", "GETSET(int64_t, Age, 0)" ], "Assignment": [ \"Sam\", \"6\" ] }] [@@NoHistory] [@@NoJson] [@@Command xxx]
+Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@NoHistory] [@@NoJson] [@@Command xxx]
 
 {...}: Compulsory
 []: Optional
@@ -802,6 +821,7 @@ Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Class { "Properties\ : [ "GET
         | Macro | Description | Example |
         | --- | --- | --- |
         | ACTION(name) | Generator will create void Do##name() and generate Action Class. Please handle logic in .cpp file. | ACTION(AddWorkspace) |
+        | ACTION_WITH_ARG_SPTR(name, type) | Generator will create void Do##name(type value) and generate Action Class. type must be class name. Argument Class must exists and have class tag @@ActionArgument. | ACTION_WITH_ARG_SPTR(AddWorkspace, VPGAddWorkspaceArgument) |
 
 [@@AccessMode]
     Default is @@ReadWrite.
@@ -817,17 +837,6 @@ Enum // {ClassMacro} [@@AccessMode] [@@Inherit] [@@Class { "Properties\ : [ "GET
 
 [@@Inherit]
     If stated, generate will not generate Getter and Setter, Manager, Action, etc.
-
-[@@Class { "Properties\ : [ "GETSET(std::wstring, Name, L\"\")", "GETSET(int64_t, Age, 0)" ], "Assignments": [ \"Sam\", \"6\" ] }]
-    Action Only.
-    Option:
-        Properties
-            Value is array of {ClassMacro}. As it is in json string, special characters need to be escaped.
-
-        Assignments
-            Value is array of values that should be initialized when creating object. Number of elements should be the same as that of Properties.
-            If not stated, Action() will be genrated.
-            If stated, Action(L"Sam", 6) will be generated.
 
 [@@NoHistory]
     Action Only.
@@ -1137,10 +1146,16 @@ X(Twitter) @VCCProject
 ****
 ## Release Log
 
+### [v0.3.3] - 2025-03-30: Review - Action Argument
+- Review folder and file naming rules. C++ folder must be lowercase without any seperator and file must be lower case with seperator. Java folder must be lowercase without any seperator and file must be having same name as class name
+- Action: add macro ACTION_WITH_ARG and ACTION_WITH_ARG_SPTR to handle argument instead of tag @@Class
+- Rename all c++ folder to lowercase
+
 ### [v0.3.2] - 2025-03-01: Review - Initialize Git Manager
 - Git Review
 - Add vpm.config.json. Default location is ~/Documents/vcc/config
 - Exception Macro add VALIDATE
+- Add field attribute @@NoJson
 
 ### [v0.3.1] - 2025-02-08: Review - Review Function Name
 - Review helper function naming
