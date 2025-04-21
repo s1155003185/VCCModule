@@ -4,6 +4,7 @@
 enum class ObjectType
 {
     NA
+    , OperationResult
     // <vcc:customObjectTypes sync="RESERVE" gen="RESERVE">
     // </vcc:customObjectTypes>
 };
