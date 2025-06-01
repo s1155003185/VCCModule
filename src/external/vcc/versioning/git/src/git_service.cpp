@@ -466,7 +466,7 @@ namespace vcc
                     continue;
                 auto log = std::make_shared<GitLog>();
                 if (pos > 0) {
-                    log->SetColumnIndex((size_t)std::floor(pos/2));
+                    log->SetColumnIndex((size_t)floor(pos/2));
                 } else
                     log->SetColumnIndex(0);
                 std::wregex pattern(L"\\(([^)]+)\\)");
@@ -907,7 +907,7 @@ namespace vcc
                 return branches;
             std::vector<std::wstring> lines = SplitStringByLine(str);
             for (const std::wstring &line : lines) {
-                if (SplitString(str, { L" ", L"\t" }).size() > 2) {
+                if (SplitString(line, { L" ", L"\t" }).size() > 2) {
                     auto branch = std::make_shared<GitBranch>();
                     ParseGitBranch(line, branch);
                     branches.push_back(branch);

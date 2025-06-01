@@ -18,15 +18,16 @@
 
 using namespace vcc;
 
-void Application::InitializeComponents() const
+void Application::InitializeComponents()
 {
     TRY
         // Initialize for Global Log and Thread Setting
-        // Default No Action
         _LogConfig = std::make_shared<LogConfig>();
-        _ActionManager = nullptr;
         _ThreadManager = std::make_shared<ThreadManager>(_LogConfig);
 
+        // <vcc:vccconfig sync="RESERVE" gen="REPLACE">
+        _ActionManager = nullptr;
+        // </vcc:vccconfig>
         // Custom Initialize Log, Action, Thread by override OnInitializeComponents
         OnInitializeComponents();
     CATCH

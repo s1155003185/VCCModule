@@ -1,13 +1,27 @@
 # Change Log
 
-## [Unreleased] - Review - Git Manager Enhancement
+## [Unreleased] - Review - using namespace vcc and naming rules
+- Review using namespace vcc: add vcc:: before function instead of using namespace vcc
 - Git Manager Enhancement
+- Review naming rule: class variable: _PascalCase / variable: camelCase / function name: camelCase / class name: PascalCase / macro names: UPPER_CASE / enum type name: PascalCase / enumerator name: UPPER_CASE / constant name: UPPER_CASE / namespace name: lowercase
+- TODO: Enum Support custom include files
 - TODO: Export function name to lowercase with underscore
 - TODO: Support Callback in argument
 - TODO: Support Structure
 - TODO: Support Set for GETSET
-- TODO: Review usage of const
-- TODO: Support GET_CUSTOM, SET_CUSTOM
+- TODO: Review RESERVE and REPLACE tag
+
+### [v0.3.6] - 2025-06-01: Review - Review Class Macro
+- Review GETSET_SPTR and MANAGER_SPTR: initialize in class constructor
+- Update vcc.json IsResultThrowException to IsActionResultThrowException
+- vcc.json supports ActionHistoryType
+- Add tag vccconfig so that setting in project is controlled by vcc.json
+- Support GETCUSTOM, SETCUSTOM, GETCUSTOM_SPTR, SETCUSTOM_SPTR
+- Support GETSET_VALIDATE, GETSET_VALIDATE_SPTR_NULL, VECTOR_VALIDATE, VECTOR_VALIDATE_SPTR, MAP_VALIDATE, MAP_VALIDATE_SPTR_R, ORDERED_MAP_VALIDATE, ORDERED_MAP_VALIDATE_SPTR_R
+- Support one enum with multi class macro
+- Class Enum supports @@Include @@Private @@Protected
+- Class Property Enum supports @@Initialize
+- Review usage of const
 
 ### [v0.3.5] - 2025-05-05: Review - vcc.json Grouping
 - Group vcc.json
