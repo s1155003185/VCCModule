@@ -7,11 +7,9 @@
 #include "i_object.hpp"
 #include "object_type.hpp"
 
-using namespace vcc;
-
-std::shared_ptr<IObject> ObjectFactory::Create(const ObjectType &objectType, std::shared_ptr<IObject> parentObject)
+std::shared_ptr<vcc::IObject> ObjectFactory::Create(const ObjectType &objectType, std::shared_ptr<vcc::IObject> parentObject)
 {
-    std::shared_ptr<IObject> result = nullptr;
+    std::shared_ptr<vcc::IObject> result = nullptr;
     TRY
         switch (objectType)
         {

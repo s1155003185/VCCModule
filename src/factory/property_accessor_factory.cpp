@@ -7,9 +7,7 @@
 #include "i_object.hpp"
 #include "i_property_accessor.hpp"
 
-using namespace vcc;
-
-std::shared_ptr<IPropertyAccessor> PropertyAccessorFactory::Create(std::shared_ptr<IObject> object)
+std::shared_ptr<vcc::IPropertyAccessor> PropertyAccessorFactory::Create(std::shared_ptr<vcc::IObject> object)
 {
     assert(object != nullptr);
 
