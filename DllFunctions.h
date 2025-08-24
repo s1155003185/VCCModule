@@ -16,7 +16,7 @@
 extern "C"
 {
 
-DLLEXPORT int GetVersion();
+DLLEXPORT int getVersion();
 
 // <vcc:dllInterface gen="REPLACE">
 // </vcc:dllInterface>

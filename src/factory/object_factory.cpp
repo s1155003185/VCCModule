@@ -7,7 +7,7 @@
 #include "i_object.hpp"
 #include "object_type.hpp"
 
-std::shared_ptr<vcc::IObject> ObjectFactory::Create(const ObjectType &objectType, std::shared_ptr<vcc::IObject> parentObject)
+std::shared_ptr<vcc::IObject> ObjectFactory::create(const ObjectType &objectType, std::shared_ptr<vcc::IObject> parentObject)
 {
     std::shared_ptr<vcc::IObject> result = nullptr;
     TRY
@@ -18,7 +18,7 @@ std::shared_ptr<vcc::IObject> ObjectFactory::Create(const ObjectType &objectType
             break;
         }
         if (result != nullptr)
-            result->SetParentObject(parentObject);
+            result->setParentObject(parentObject);
     CATCH
     return result;
 }

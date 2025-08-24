@@ -9,7 +9,7 @@
 // <vcc:dllInterfaceHeader gen="REPLACE">
 // </vcc:dllInterfaceHeader>
 
-int GetVersion()
+int getVersion()
 {
   return 1;
 }

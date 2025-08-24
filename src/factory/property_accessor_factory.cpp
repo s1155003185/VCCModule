@@ -7,11 +7,11 @@
 #include "i_object.hpp"
 #include "i_property_accessor.hpp"
 
-std::shared_ptr<vcc::IPropertyAccessor> PropertyAccessorFactory::Create(std::shared_ptr<vcc::IObject> object)
+std::shared_ptr<vcc::IPropertyAccessor> PropertyAccessorFactory::create(std::shared_ptr<vcc::IObject> object)
 {
     assert(object != nullptr);
 
-    switch (object->GetObjectType())
+    switch (object->getObjectType())
     {
     default:
         assert(false);

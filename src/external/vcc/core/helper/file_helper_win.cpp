@@ -13,7 +13,7 @@
 
 namespace vcc
 {
-	std::wstring GetSystemFolderPathWindow(const SystemFolderType &fileType)
+	std::wstring getSystemFolderPathWindow(const SystemFolderType &fileType)
     {
         std::wstring result = L"";
         try {
@@ -75,7 +75,7 @@ namespace vcc
 			// 	csidl = CSIDL_WINDOWS;
 			// 	break;
 			default:
-			    return L"";
+				return L"";
 			}
 
 			CHAR path[MAX_PATH];
